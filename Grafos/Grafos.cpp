@@ -2,6 +2,7 @@
 //
 
 #include "pch.h"
+#include "grafo.h"
 #include <iostream>
 
 using namespace std;
