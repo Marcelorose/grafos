@@ -9,5 +9,7 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello World!\n"; 
+	Grafo teste = Grafo(true, false);
+
+    cout << teste.direcionado << "\n" << teste.ponderado; 
 }
