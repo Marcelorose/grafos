@@ -10,6 +10,6 @@ using namespace std;
 int main()
 {
 	Grafo teste = Grafo(true, false);
-
+	teste.inserirVertice("asd");
     cout << teste.direcionado << "\n" << teste.ponderado; 
 }
