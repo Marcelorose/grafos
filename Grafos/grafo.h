@@ -1,4 +1,9 @@
 #pragma once
+#ifndef GRAFO_H
+#define GRAFO_H
+
+#include <iostream>
+using namespace std;
 
 struct Grafo {
 	bool direcionado;
@@ -16,3 +21,5 @@ struct Grafo {
 		return true;
 	};
 };
+
+#endif 
