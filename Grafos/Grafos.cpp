@@ -12,6 +12,6 @@ int main()
 	Grafo teste = Grafo(true, false);
 
 	teste.inserirVertice("asd");
-    cout << teste.direcionado << "\n" << teste.ponderado << "\n" << teste.vertices[0];
+	cout << teste.direcionado << "\n" << teste.ponderado << "\n" << teste.vertices[0];
 
 }
