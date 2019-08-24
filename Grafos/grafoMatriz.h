@@ -1,7 +1,8 @@
 #pragma once
 
-struct GrafoLista {
-	GrafoLista() {
+struct GrafoMatriz {
+
+	GrafoMatriz() {
 
 	};
 	string inserirVertice(string vertices[],string label) {
