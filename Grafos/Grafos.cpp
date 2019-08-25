@@ -11,7 +11,13 @@ int main()
 {
 	Grafo teste = Grafo(true, false);
 
-	teste.inserirVertice("asd");
-	cout << teste.direcionado << "\n" << teste.ponderado << "\n" << teste.vertices[0];
+	teste.inserirVertice("Vertice 1");
+	teste.inserirVertice("Vertice 2");
+	teste.inserirAresta(10, 2, 5);
+	teste.inserirAresta(4, 3, 2);
+	teste.inserirAresta(1, 6, 1);
+	teste.inserirAresta(2, 9, 3);
+	teste.imprimeGrafo();
+	cout << teste.labelVertice(0) << "\n" << teste.labelVertice(1);
 
 }

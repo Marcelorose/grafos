@@ -6,27 +6,46 @@
 #include "grafoLista.h"
 #include "grafoMatriz.h"
 using namespace std;
-
+const int TAMANHO = 100;
 struct Grafo {
-	bool direcionado;
-	bool ponderado;
 	GrafoLista grafoLista;
 	GrafoMatriz grafoMatriz;
-	string vertices[10];
-	
+	int arestas[TAMANHO][2] = {};
+	int peso_aresta[TAMANHO] = {};
+	bool direcionado;
+	bool ponderado;
 
 	Grafo(bool dir, bool pond) {
 		this->direcionado = dir;
 		this->ponderado = pond;
-		grafoLista = GrafoLista();
 		grafoMatriz = GrafoMatriz();
+		grafoLista = GrafoLista();
+	};
+
+	string labelVertice(int indice) {
+		return grafoMatriz.labelVertice(indice);
 	};
 
 	bool inserirVertice(string label) {
-		grafoLista.inserirVertice(vertices, label);
-		grafoMatriz.inserirVertice(vertices, label);
-		return true;
+		if (grafoLista.inserirVertice(label) & grafoMatriz.inserirVertice(label)) {
+			return true;
+		}
+		return false;
 	};
+
+	bool inserirAresta(int origem, int destino, int peso = 1) {
+		if (!this->ponderado) {
+			peso = 1;
+		}
+		if (grafoMatriz.inserirAresta(this->direcionado, origem, destino, peso)) {
+			return true;
+		}
+		return false;
+	}
+
+	void imprimeGrafo() {
+		grafoMatriz.imprimeGrafo();
+	}
 
 };
 
