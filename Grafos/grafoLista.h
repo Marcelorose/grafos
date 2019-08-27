@@ -1,10 +1,16 @@
 #pragma once
 #ifndef GRAFO_LISTA_H
 #define GRAFO_LISTA_H
+
 #include <iostream>
+#include "vertice.h"
+
 using namespace std;
 struct GrafoLista {
 	string vertices[100] = {};
+
+	Vertice *raiz;
+	int qtd;
 
 	GrafoLista() {
 	};
@@ -26,6 +32,8 @@ struct GrafoLista {
 		}
 	};
 
-	bool existeAresta(int origem, int destino);
+	bool existeAresta(int origem, int destino) {
+		
+	};
 };
 #endif 

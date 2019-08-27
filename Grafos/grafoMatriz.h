@@ -33,7 +33,7 @@ struct GrafoMatriz {
 			return false;
 		}
 		this->arestas[origem][destino] = peso;
-		if (direcionado) {
+		if (!direcionado) {
 			this->arestas[destino][origem] = peso;
 		}
 		return true;
@@ -56,6 +56,13 @@ struct GrafoMatriz {
 		}
 	};
 
-	bool existeAresta(int origem, int destino);
+	bool existeAresta(int origem, int destino) {
+		if (this->arestas[origem][destino] != 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	};
 };
 #endif 

@@ -1,8 +1,15 @@
 #pragma once
+#ifndef VERTICE_H
+#define VERTICE_H
 
-#include "grafoLista.h"
+#include <iostream>
+#include "adjacente.h"
+using namespace std;
 
 struct Vertice {
-	int id;
-	GrafoLista lista;
+	Vertice *prox;
+	Adjacente *raiz;
+	string label;
 };
+
+#endif
