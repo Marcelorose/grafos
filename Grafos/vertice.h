@@ -10,6 +10,10 @@ struct Vertice {
 	Vertice *prox;
 	Adjacente *raiz;
 	string label;
+
+	Vertice() {
+		
+	}
 };
 
 #endif

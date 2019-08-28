@@ -13,6 +13,8 @@ struct GrafoLista {
 	int qtd;
 
 	GrafoLista() {
+		this->raiz = NULL;
+		this->qtd = 0;
 	};
 
 	string labelVertice(int indice) {
@@ -20,7 +22,7 @@ struct GrafoLista {
 	};
 
 	bool inserirVertice(string label) {
-		for (int x = 0; x < 100; x++) {
+		/*for (int x = 0; x < 100; x++) {
 			if (this->vertices[x] == "") {
 				this->vertices[x] = label;
 				return true;
@@ -29,6 +31,11 @@ struct GrafoLista {
 				cout << "Não a mais espaços disponíveis!";
 				return false;
 			}
+		}*/
+		if (this->qtd == 0) {
+			vertice = Vertice();
+			raiz =
+
 		}
 	};
 
