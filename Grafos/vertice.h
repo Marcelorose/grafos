@@ -7,8 +7,8 @@
 using namespace std;
 
 struct Vertice {
-	Vertice *prox;
-	Adjacente *raiz;
+	/*Vertice *prox;
+	Adjacente *raiz;*/
 	string label;
 
 	Vertice() {

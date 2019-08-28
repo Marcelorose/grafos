@@ -3,6 +3,7 @@
 
 #include "pch.h"
 #include "grafo.h"
+#include "vertice.h"
 #include <iostream>
 
 using namespace std;
@@ -10,7 +11,6 @@ using namespace std;
 int main()
 {
 	Grafo teste = Grafo(true, false);
-
 	teste.inserirVertice("Vertice 1");
 	teste.inserirVertice("Vertice 2");
 	teste.inserirAresta(10, 2, 5);
