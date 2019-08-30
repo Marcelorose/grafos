@@ -26,12 +26,12 @@ struct Grafo {
 		return grafoMatriz.labelVertice(indice);
 	};
 
-	bool inserirVertice(string label) {
+	/*bool inserirVertice(string label) {
 		if (grafoLista.inserirVertice(label) & grafoMatriz.inserirVertice(label)) {
 			return true;
 		}
 		return false;
-	};
+	};*/
 
 	bool inserirAresta(int origem, int destino, int peso = 1) {
 		if (!this->ponderado) {

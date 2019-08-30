@@ -3,36 +3,35 @@
 #define GRAFO_LISTA_H
 
 #include <iostream>
+#include <vector>
 #include "vertice.h"
 
 using namespace std;
 struct GrafoLista {
-	string vertices[100] = {};
+	vector <Vertice> vertices;
 	int qtd;
 
 	GrafoLista() { 
-		this->qtd = 0;
+		
 	};
 
 	string labelVertice(int indice) {
-		return this->vertices[indice];
-	};
-
-	bool inserirVertice(string label) {
-		for (int x = 0; x < 100; x++) {
-			if (this->vertices[x] == "") {
-				this->vertices[x] = label;
-				return true;
-			}
-			if (x == 100 - 1) {
-				cout << "Não a mais espaços disponíveis!";
-				return false;
-			}
+		if (indice <= this->vertices.size() - 1) {
+			return this->vertices[indice].label;
 		}
 	};
 
+	bool inserirVertice(string label) {
+		Vertice ver;
+		ver.label = label;
+		this->vertices.push_back(ver);
+	};
+
 	bool existeAresta(int origem, int destino) {
-		
+		for (std::vector<Adjacente>::iterator it = this->vertices[origem].adj.begin(); it != this->vertices[origem].adj.end(); ++it) {
+			
+		}
+		return true;
 	};
 };
 #endif 
