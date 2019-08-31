@@ -2,12 +2,17 @@
 #ifndef GRAFO_MATRIZ_H
 #define GRAFO_MATRIZ_H
 #include <iostream>
+#include <vector>
 using namespace std;
 struct GrafoMatriz {
-	string vertices[10] = {};
-	int arestas[10][10] = {};
+	vector <string> vertices;
+	vector <vector <int>> arestas;
+	bool direcionado;
+	bool ponderado;
 
-	GrafoMatriz() {
+	GrafoMatriz(bool dir = false, bool pond = false) {
+		this->direcionado = dir;
+		this->ponderado = pond;
 	};
 
 	string labelVertice(int indice) {
@@ -15,33 +20,24 @@ struct GrafoMatriz {
 	};
 
 	bool inserirVertice(string label) {
-		for (int x = 0; x < 10; x++) {
-			if (this->vertices[x] == "") {
-				this->vertices[x] = label;
-				return true;
-			}
-			if (x == 10 - 1) {
-				cout << "Não a mais espaços disponíveis!";
-				return false;
-			}
-		}
+		vertices.push_back(label);
+		arestas.push_back({0});
+		for (int x = 0; x < arestas.size(); x++)
+			arestas[x].resize(vertices.size());
+		return true;
 	};
 
-	bool inserirAresta(bool direcionado, int origem, int destino, int peso) {
-		if (origem > 10 || destino > 10 || origem < 0 || destino < 0) {
-			cout << "Origem ou destino inválidos!";
-			return false;
-		}
+	bool inserirAresta(int origem, int destino, int peso = 1) {
 		this->arestas[origem][destino] = peso;
-		if (!direcionado) {
+		if (this->direcionado) {
 			this->arestas[destino][origem] = peso;
 		}
 		return true;
 	}
 
 	void imprimeGrafo() {
-		for (int i = 0; i < 10; i++) {
-			for (int x = 0; x < 10; x++) {
+		for (int i = 0; i <= arestas.size(); i++) {
+			for (int x = 0; x <= arestas.size(); x++) {
 				if (x == 0) {
 					cout << i << "\t";
 				}
@@ -49,7 +45,7 @@ struct GrafoMatriz {
 					cout << x << "\t";
 				}
 				else {
-					cout << arestas[i][x] << "\t";
+					cout << arestas[i-1][x-1] << "\t";
 				}
 			}
 			cout << "\n";
@@ -57,12 +53,20 @@ struct GrafoMatriz {
 	};
 
 	bool existeAresta(int origem, int destino) {
-		if (this->arestas[origem][destino] != 0) {
-			return true;
+		if (arestas.size() < origem || arestas[origem][destino] == NULL) {
+				return 0;
 		}
-		else {
-			return false;
-		}
+		return arestas[origem][destino];
 	};
+
+	vector<int> retornarVizinhos(int vertice) {
+		vector <int> vizinhos;
+		for (int x = 0; x < arestas[vertice].size(); x++) {
+			if (arestas[vertice][x] != 0) {
+				vizinhos.push_back(x);
+			}
+		}
+		return vizinhos;
+	}
 };
 #endif 

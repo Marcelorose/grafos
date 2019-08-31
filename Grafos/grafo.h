@@ -3,22 +3,20 @@
 #define GRAFO_H
 
 #include <iostream>
+#include <vector>
 #include "grafoLista.h"
 #include "grafoMatriz.h"
 using namespace std;
-const int TAMANHO = 100;
 struct Grafo {
 	GrafoLista grafoLista;
 	GrafoMatriz grafoMatriz;
-	int arestas[TAMANHO][2] = {};
-	int peso_aresta[TAMANHO] = {};
 	bool direcionado;
 	bool ponderado;
 
 	Grafo(bool dir, bool pond) {
 		this->direcionado = dir;
 		this->ponderado = pond;
-		grafoMatriz = GrafoMatriz();
+		grafoMatriz = GrafoMatriz(dir, pond);
 		grafoLista = GrafoLista();
 	};
 
@@ -33,7 +31,7 @@ struct Grafo {
 		return false;
 	};*/
 
-	bool inserirAresta(int origem, int destino, int peso = 1) {
+	/*bool inserirAresta(int origem, int destino, int peso = 1) {
 		if (!this->ponderado) {
 			peso = 1;
 		}
@@ -41,7 +39,7 @@ struct Grafo {
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 	void imprimeGrafo() {
 		grafoMatriz.imprimeGrafo();
