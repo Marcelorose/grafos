@@ -5,34 +5,38 @@
 #include "grafo.h"
 #include "vertice.h"
 #include <vector>
+#include <locale.h>
 #include <iostream>
 
 using namespace std;
 
 int main()
 {
+	setlocale(LC_ALL, "Portuguese");
+
 	GrafoLista gf = GrafoLista();
-	vector <Vertice> v;
-	Vertice ver;
-	ver.label = "teste";
-	v.push_back(ver);
-	Adjacente adj;
-	int x = 1;
-	adj.prox = NULL;
-	adj.id = &x;
-	ver.adj.push_back(adj);
-	//Adjacente adj;
-	adj.prox = NULL;
-	int a = 2;
-	adj.id = &a;
-	ver.adj.push_back(adj);
-	//Adjacente adj;
-	adj.prox = NULL;
-	int b = 3;
-	adj.id = &b;
-	ver.adj.push_back(adj);
-	gf.vertices = v;
-	gf.existeAresta(0, 2);
+	gf.inserirVertice("vertice 1");
+	gf.inserirVertice("vertice 2");
+	gf.inserirVertice("vertice 3");
+	gf.inserirVertice("vertice 4");
+	gf.inserirVertice("vertice 5");
+	gf.inserirVertice("vertice 6");
+	gf.inserirVertice("vertice 7");
+
+	gf.inserirAresta(0, 1);
+	gf.inserirAresta(0, 2);
+	gf.inserirAresta(1, 5);
+	gf.inserirAresta(2, 4);
+	gf.inserirAresta(3, 1);
+	gf.inserirAresta(3, 6);
+	gf.inserirAresta(4, 2);
+	gf.inserirAresta(5, 4);
+	gf.inserirAresta(6, 2);
+	gf.inserirAresta(6, 1);
+	gf.inserirAresta(6, 4);
+
+	gf.imprimirGrafo();
+
 
 	/*
 	Grafo teste = Grafo(true, true);
