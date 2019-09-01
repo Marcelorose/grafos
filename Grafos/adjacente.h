@@ -3,8 +3,8 @@
 #define ADJACENTE_H
 
 struct Adjacente {
-	Adjacente* prox;
 	int id;
+	int peso;
 };
 
 
