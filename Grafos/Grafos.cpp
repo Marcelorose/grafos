@@ -12,7 +12,7 @@ using namespace std;
 
 int main()
 {
-	setlocale(LC_ALL, "Portuguese");
+	/*setlocale(LC_ALL, "Portuguese");
 
 	GrafoLista gf = GrafoLista();
 	gf.inserirVertice("vertice 1");
@@ -35,11 +35,11 @@ int main()
 	gf.inserirAresta(6, 1);
 	gf.inserirAresta(6, 4);
 
-	gf.imprimirGrafo();
+	gf.imprimirGrafo();*/
 
 
-	/*
-	Grafo teste = Grafo(true, true);
+	
+	Grafo teste = Grafo(false, true);
 	teste.grafoMatriz.inserirVertice("Vertice 1");
 	teste.grafoMatriz.inserirVertice("Vertice 2");
 	teste.grafoMatriz.inserirVertice("Vertice 3");
@@ -47,17 +47,17 @@ int main()
 	teste.grafoMatriz.inserirVertice("Vertice 5");
 	teste.grafoMatriz.inserirVertice("Vertice 6");
 	teste.grafoMatriz.inserirVertice("Vertice 7");
-	teste.grafoMatriz.inserirAresta(0, 1, 5);
-	teste.grafoMatriz.inserirAresta(2, 0, 6);
+	teste.grafoMatriz.inserirAresta(5, 1, 5);
+	teste.grafoMatriz.inserirAresta(5, 0, 6);
 	teste.grafoMatriz.inserirAresta(5, 3, 8);
-	teste.grafoMatriz.inserirAresta(2, 4, 1);
+	teste.grafoMatriz.inserirAresta(2, 5, 1);
 	teste.grafoMatriz.inserirAresta(6, 5, 4);
 	teste.grafoMatriz.imprimeGrafo();
-	cout << teste.grafoMatriz.existeAresta(0, 0);
-	cout << teste.grafoMatriz.existeAresta(0, 1);
+	//cout << teste.grafoMatriz.existeAresta(0, 0);
+	//cout << teste.grafoMatriz.existeAresta(0, 1);
 	vector <int> temp = teste.grafoMatriz.retornarVizinhos(5);
 	for (int x = 0; x < temp.size(); x++) {
 		cout << temp[x] << endl;
-	}*/
+	}
 
 }

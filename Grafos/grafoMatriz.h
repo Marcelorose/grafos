@@ -52,7 +52,7 @@ struct GrafoMatriz {
 		}
 	};
 
-	bool existeAresta(int origem, int destino) {
+	int existeAresta(int origem, int destino) {
 		if (arestas.size() < origem || arestas[origem][destino] == NULL) {
 				return 0;
 		}
@@ -61,12 +61,12 @@ struct GrafoMatriz {
 
 	vector<int> retornarVizinhos(int vertice) {
 		vector <int> vizinhos;
-		int percorrer = arestas.size();
-		if (this->direcionado) {
-			percorrer = 1;
-		}
+		int percorrer = vertices.size();
+		int percorrer_aresta = arestas.size();
 		for (int i = 0; i < percorrer; i++) {
-			for (int x = 0; x < arestas.size(); x++) {
+			if (this->direcionado)
+				percorrer_aresta = i;
+			for (int x = 0; x < percorrer_aresta; x++) {
 				if (arestas[i][x] != 0 & i == vertice) {
 					vizinhos.push_back(x);
 				}
