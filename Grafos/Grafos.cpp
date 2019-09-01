@@ -40,24 +40,24 @@ int main()
 
 	
 	Grafo teste = Grafo(false, true);
-	teste.grafoMatriz.inserirVertice("Vertice 1");
-	teste.grafoMatriz.inserirVertice("Vertice 2");
-	teste.grafoMatriz.inserirVertice("Vertice 3");
-	teste.grafoMatriz.inserirVertice("Vertice 4");
-	teste.grafoMatriz.inserirVertice("Vertice 5");
-	teste.grafoMatriz.inserirVertice("Vertice 6");
-	teste.grafoMatriz.inserirVertice("Vertice 7");
-	teste.grafoMatriz.inserirAresta(5, 1, 5);
-	teste.grafoMatriz.inserirAresta(5, 0, 6);
-	teste.grafoMatriz.inserirAresta(5, 3, 8);
-	teste.grafoMatriz.inserirAresta(2, 5, 1);
-	teste.grafoMatriz.inserirAresta(6, 5, 4);
+	teste.grafoMatriz.inserirVertice("A"); // 0
+	teste.grafoMatriz.inserirVertice("B"); // 1
+	teste.grafoMatriz.inserirVertice("C"); // 2
+	teste.grafoMatriz.inserirVertice("D"); // 3
+	teste.grafoMatriz.inserirVertice("E"); // 4
+	teste.grafoMatriz.inserirAresta(0, 1, 3); // A-B
+	teste.grafoMatriz.inserirAresta(0, 2, 5); // A-C
+	teste.grafoMatriz.inserirAresta(0, 3, 6); // A-D
+	teste.grafoMatriz.inserirAresta(0, 4, 8); // A-E
+	teste.grafoMatriz.inserirAresta(2, 4, 2); // C-E
+	teste.grafoMatriz.inserirAresta(4, 1, 11); // E-B
+	teste.grafoMatriz.inserirAresta(1, 3, 2); // F-C
 	teste.grafoMatriz.imprimeGrafo();
 	//cout << teste.grafoMatriz.existeAresta(0, 0);
 	//cout << teste.grafoMatriz.existeAresta(0, 1);
-	vector <int> temp = teste.grafoMatriz.retornarVizinhos(5);
+	vector <int> temp = teste.grafoMatriz.dijkstra_retornoAnterior(0);
 	for (int x = 0; x < temp.size(); x++) {
-		cout << temp[x] << endl;
+		cout << temp[x] << "\t";
 	}
 
 }
