@@ -61,9 +61,18 @@ struct GrafoMatriz {
 
 	vector<int> retornarVizinhos(int vertice) {
 		vector <int> vizinhos;
-		for (int x = 0; x < arestas[vertice].size(); x++) {
-			if (arestas[vertice][x] != 0) {
-				vizinhos.push_back(x);
+		int percorrer = arestas.size();
+		if (this->direcionado) {
+			percorrer = 1;
+		}
+		for (int i = 0; i < percorrer; i++) {
+			for (int x = 0; x < arestas.size(); x++) {
+				if (arestas[i][x] != 0 & i == vertice) {
+					vizinhos.push_back(x);
+				}
+				else if (arestas[i][x] != 0 & x == vertice) {
+					vizinhos.push_back(i);
+				}
 			}
 		}
 		return vizinhos;

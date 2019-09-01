@@ -8,6 +8,8 @@
 using namespace std;
 
 struct Vertice {
+	/*Vertice *prox;
+	Adjacente *raiz;*/
 	string label;
 	vector <Adjacente> adj;
 
