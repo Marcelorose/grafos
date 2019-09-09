@@ -4,15 +4,13 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-struct GrafoMatriz {
+
+class GrafoMatriz : public Grafo {
 	vector <string> vertices;
 	vector <vector <int>> arestas;
-	bool direcionado;
-	bool ponderado;
 
-	GrafoMatriz(bool dir = false, bool pond = false) {
-		this->direcionado = dir;
-		this->ponderado = pond;
+	GrafoMatriz(bool dir = false, bool pond = false) : Grafo(dir, pond){
+		
 	};
 
 	string labelVertice(int indice) {
@@ -20,16 +18,18 @@ struct GrafoMatriz {
 	};
 
 	bool inserirVertice(string label) {
-		vertices.push_back(label);
-		arestas.push_back({0});
-		for (int x = 0; x < arestas.size(); x++)
-			arestas[x].resize(vertices.size());
-		return true;
+		if (Grafo::inserirVertice(label)) {
+			vertices.push_back(label);
+			arestas.push_back({ 0 });
+			for (int x = 0; x < arestas.size(); x++)
+				arestas[x].resize(vertices.size());
+			return true;
+		}
 	};
 
 	bool inserirAresta(int origem, int destino, int peso = 1) {
 		this->arestas[origem][destino] = peso;
-		if (this->direcionado) {
+		if (!this->direcionado) {
 			this->arestas[destino][origem] = peso;
 		}
 		return true;
