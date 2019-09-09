@@ -98,7 +98,8 @@ public:
 
 		visitados.push_back(pos);
 		pilha.push(pos);
-		cout << pilha.top();
+
+		int aux;
 		
 		while (true)
 		{
@@ -109,8 +110,9 @@ public:
 				{
 					if (!isVisitado(visitados, this->vertices.at(pilha.top()).adj.at(i).id)) {
 						check = true;
-						pilha.push(this->vertices.at(pilha.top()).adj.at(i).id);
-						visitados.push_back(this->vertices.at(pilha.top()).adj.at(i).id);
+						aux = this->vertices.at(pilha.top()).adj.at(i).id;
+						pilha.push(aux);
+						visitados.push_back(aux);
 						//pos = this->vertices.at(pilha.top()).adj.at(i).id;
 						break;
 					}
