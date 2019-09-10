@@ -7,7 +7,7 @@
 #include "vertice.h"
 #include "grafo.h"
 #include <stack>
-#include <queue>
+#include "dijkstra.h"
 
 using namespace std;
 
@@ -177,6 +177,10 @@ public:
 		}
 
 		return visitados;
+	}
+
+	void dijkstra(int pos = 0) {
+		vector<Dijkstra> vector_dijkstra;
 	}
 
 	void imprimirGrafo() {
