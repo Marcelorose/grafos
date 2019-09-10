@@ -36,7 +36,7 @@ int main()
 	gr.inserirAresta(4, 5);
 
 	vector<int> a;
-	a = gr.buscaProfundidade(0);
+	a = gr.buscaLargura(0);
 	for (int i = 0; i < a.size(); i++)
 	{
 		cout << a.at(i);

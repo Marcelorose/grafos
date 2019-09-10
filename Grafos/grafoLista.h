@@ -7,6 +7,7 @@
 #include "vertice.h"
 #include "grafo.h"
 #include <stack>
+#include <queue>
 
 using namespace std;
 
@@ -113,7 +114,6 @@ public:
 						aux = this->vertices.at(pilha.top()).adj.at(i).id;
 						pilha.push(aux);
 						visitados.push_back(aux);
-						//pos = this->vertices.at(pilha.top()).adj.at(i).id;
 						break;
 					}
 				}
@@ -130,7 +130,54 @@ public:
 		return visitados;
 	}
 
+	void checkIsVisited(vector<int> &visitados, vector<int> &fila, vector<int> vizinhos) {
+		vector<int>::iterator it;
+		bool isVisited;
+		
+		for (int i = 0; i < vizinhos.size(); i++)
+		{
+			isVisited = false;
+			for (int x = 0; x < visitados.size(); x++)
+			{
+				if (vizinhos.at(i) == visitados.at(x)) {
+					isVisited = true;
+				}
+			}
+			if (!isVisited) {
+				fila.push_back(vizinhos.at(i));
+				visitados.push_back(vizinhos.at(i));
+			}
+		}
+		it = fila.begin();
+		fila.erase(it);
+	}
 
+	vector<int> buscaLargura(int pos = 0) {
+		vector<int> visitados;
+		vector<int> fila;
+		vector<int>::iterator it;
+		vector<int> viz;
+
+		visitados.push_back(pos);
+		fila.push_back(pos);
+
+		int aux;
+
+		while (true)
+		{
+			viz = retornarVizinhos(pos);
+			checkIsVisited(visitados, fila, viz);
+
+			if (fila.size() == 0) {
+				break;
+			}
+			else {
+				pos = fila.at(0);
+			}
+		}
+
+		return visitados;
+	}
 
 	void imprimirGrafo() {
 		for (int i = 0; i < this->vertices.size(); i++)
