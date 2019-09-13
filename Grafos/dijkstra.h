@@ -7,9 +7,9 @@
 
 struct Dijkstra
 {
-	Vertice vertice;
+	int vertice;
 	int distancia;
-	Vertice anterior;
+	int anterior;
 	bool isFechado;
 };
 

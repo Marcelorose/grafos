@@ -83,6 +83,17 @@ public:
 		return vizinhos;
 	}
 
+	vector<Adjacente> retornarVizinhosPond(int vertice) {
+		vector<Adjacente> vizinhos;
+		if (vertice < this->vertices.size()) {
+			for (int i = 0; i < this->vertices.at(vertice).adj.size(); i++)
+			{
+				vizinhos.push_back(this->vertices.at(vertice).adj.at(i));
+			}
+		}
+		return vizinhos;
+	}
+
 	bool isVisitado(vector<int> vetor, int num) {
 		for (int i = 0; i < vetor.size(); i++)
 		{
@@ -179,8 +190,72 @@ public:
 		return visitados;
 	}
 
-	void dijkstra(int pos = 0) {
+	bool aberto_distancia_nao_finita(vector<Dijkstra> vector) {
+		for (int i = 0; i < vector.size(); i++)
+		{
+			if (vector.at(i).isFechado == false && vector.at(i).distancia != INT_MAX) {
+				return true;
+			}
+
+		}
+		return false;
+	}
+
+	vector<int> dijkstra(bool distancia, int pos = 0) {
 		vector<Dijkstra> vector_dijkstra;
+		vector<Adjacente> vizinhos;
+		int atual = pos;
+		Dijkstra dj;
+		dj.distancia = INT_MAX;
+		dj.anterior = -1;
+		dj.isFechado = false;
+
+		for (int i = 0; i < this->vertices.size(); i++)
+		{
+			dj.vertice = i;
+			vector_dijkstra.push_back(dj);
+		}
+		 
+		vector_dijkstra.at(pos).distancia = 0;
+
+		while (aberto_distancia_nao_finita(vector_dijkstra))
+		{
+			vizinhos = retornarVizinhosPond(pos);
+			for (int i = 0; i < vizinhos.size(); i++)
+			{
+				if(!vector_dijkstra.at(vizinhos.at(i).id).isFechado) {
+					if (vector_dijkstra.at(vizinhos.at(i).id).anterior == -1) {
+						vector_dijkstra.at(vizinhos.at(i).id).anterior = pos;
+						vector_dijkstra.at(vizinhos.at(i).id).distancia = vizinhos.at(i).peso;
+					}
+					else
+					{
+						if (vizinhos.at(i).peso + vector_dijkstra.at(pos).distancia < vector_dijkstra.at(vizinhos.at(i).id).distancia) {
+							vector_dijkstra.at(vizinhos.at(i).id).anterior = pos;
+							vector_dijkstra.at(vizinhos.at(i).id).distancia = vizinhos.at(i).peso + vector_dijkstra.at(pos).distancia;
+						}
+					}
+				}
+			}
+			vector_dijkstra.at(pos).isFechado = true;
+			pos++;
+		}
+		if (distancia) {
+			vector<int> listaDistancia;
+			for (int i = 0; i < vector_dijkstra.size(); i++)
+			{
+				listaDistancia.push_back(vector_dijkstra.at(i).distancia);
+			}
+			return listaDistancia;
+		}
+		else {
+			vector<int> verticeAnterior;
+			for (int i = 0; i < vector_dijkstra.size(); i++)
+			{
+				verticeAnterior.push_back(vector_dijkstra.at(i).anterior);
+			}
+			return verticeAnterior;
+		}
 	}
 
 	void imprimirGrafo() {
