@@ -9,8 +9,8 @@ class GrafoMatriz : public Grafo {
 	vector <string> vertices;
 	vector <vector <int>> arestas;
 
-	GrafoMatriz(bool dir = false, bool pond = false) : Grafo(dir, pond){
-		
+	GrafoMatriz(bool dir = false, bool pond = false) : Grafo(dir, pond) {
+
 	};
 
 	string labelVertice(int indice) {
@@ -45,7 +45,7 @@ class GrafoMatriz : public Grafo {
 					cout << x << "\t";
 				}
 				else {
-					cout << arestas[i-1][x-1] << "\t";
+					cout << arestas[i - 1][x - 1] << "\t";
 				}
 			}
 			cout << "\n";
@@ -54,7 +54,7 @@ class GrafoMatriz : public Grafo {
 
 	int existeAresta(int origem, int destino) {
 		if (arestas.size() < origem || arestas[origem][destino] == NULL) {
-				return 0;
+			return 0;
 		}
 		return arestas[origem][destino];
 	};
@@ -122,7 +122,7 @@ class GrafoMatriz : public Grafo {
 	}
 
 	vector<int> dijkstra_retornoDistancia(int vertice_inicial) {
-		vector<int> fechado(vertices.size(),0);
+		vector<int> fechado(vertices.size(), 0);
 		vector<int> anterior;
 		vector<int> distancia;
 		int percorrer = vertices.size();
@@ -201,7 +201,7 @@ class GrafoMatriz : public Grafo {
 			}
 			for (int x = 0; x < fechado.size(); x++) {
 				if (fechado[x] == 1)
-					soma_fechado = x+1;
+					soma_fechado = x + 1;
 			}
 		}
 		return anterior;

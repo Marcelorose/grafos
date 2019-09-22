@@ -15,12 +15,8 @@ class GrafoLista : public Grafo {
 public:
 	vector <Vertice> vertices;
 
-	GrafoLista(bool dir = false, bool pond = false) : Grafo(dir, pond){
-		
-	}
+	GrafoLista(bool dir = false, bool pond = false) : Grafo(dir, pond) {
 
-	bool isDirecionado() {
-		return direcionado;
 	}
 
 	string labelVertice(int indice) {
@@ -48,7 +44,7 @@ public:
 			adj.id = destino;
 			adj.peso = peso;
 			this->vertices.at(origem).adj.push_back(adj);
-			if (this->direcionado) {
+			if (!this->direcionado) {
 				adj.id = origem;
 				adj.peso = peso;
 				this->vertices.at(destino).adj.push_back(adj);
@@ -112,7 +108,7 @@ public:
 		pilha.push(pos);
 
 		int aux;
-		
+
 		while (true)
 		{
 			if (this->vertices.at(pilha.top()).adj.size() > 0)
@@ -141,10 +137,10 @@ public:
 		return visitados;
 	}
 
-	void checkIsVisited(vector<int> &visitados, vector<int> &fila, vector<int> vizinhos) {
+	void checkIsVisited(vector<int>& visitados, vector<int>& fila, vector<int> vizinhos) {
 		vector<int>::iterator it;
 		bool isVisited;
-		
+
 		for (int i = 0; i < vizinhos.size(); i++)
 		{
 			isVisited = false;
@@ -215,7 +211,7 @@ public:
 			dj.vertice = i;
 			vector_dijkstra.push_back(dj);
 		}
-		 
+
 		vector_dijkstra.at(pos).distancia = 0;
 
 		while (aberto_distancia_nao_finita(vector_dijkstra))
@@ -223,7 +219,7 @@ public:
 			vizinhos = retornarVizinhosPond(pos);
 			for (int i = 0; i < vizinhos.size(); i++)
 			{
-				if(!vector_dijkstra.at(vizinhos.at(i).id).isFechado) {
+				if (!vector_dijkstra.at(vizinhos.at(i).id).isFechado) {
 					if (vector_dijkstra.at(vizinhos.at(i).id).anterior == -1) {
 						vector_dijkstra.at(vizinhos.at(i).id).anterior = pos;
 						vector_dijkstra.at(vizinhos.at(i).id).distancia = vizinhos.at(i).peso;
@@ -258,10 +254,16 @@ public:
 		}
 	}
 
+	bool isPlano() {
+		if (numeroVertices()) {
+			return true;
+		}
+	}
+
 	void imprimirGrafo() {
 		for (int i = 0; i < this->vertices.size(); i++)
 		{
-			cout << i  << "  " << this->vertices.at(i).label << "    ";
+			cout << i << "  " << this->vertices.at(i).label << "    ";
 			cout << "Adjacentes: ";
 			for (int a = 0; a < this->vertices.at(i).adj.size(); a++)
 			{

@@ -18,8 +18,6 @@ int main()
 
 	GrafoLista gr = GrafoLista(true, true);
 
-	//cout << gr.isDirecionado();
-
 	gr.inserirVertice("A");
 	gr.inserirVertice("B");
 	gr.inserirVertice("C");
@@ -34,7 +32,30 @@ int main()
 	gr.inserirAresta(1, 4, 11);
 	gr.inserirAresta(2, 4, 2);
 
-	gr.dijkstra(0);
+	vector<int> distancia;
+	distancia = gr.dijkstra(true, 0);
+
+	cout << "Distancia dos vertices para a origem" << endl;
+
+	for (int i = 0; i < distancia.size(); i++)
+	{
+		cout << " | " << distancia.at(i);
+	}
+
+	cout << " | ";
+
+	vector<int> anterior;
+	anterior = gr.dijkstra(false, 0);
+
+	cout << endl << endl << "Vertice Anterior (Vertices que possuem -1 como anterior e porque nao possuem um anterior)" << endl;
+
+	for (int i = 0; i < anterior.size(); i++)
+	{
+		cout << " | " << anterior.at(i);
+	}
+
+	cout << " | " << endl;
+
 
 	return 0;
 }

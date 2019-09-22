@@ -27,6 +27,17 @@ public:
 		return true;
 	};
 
+	bool numeroVertices() {
+		if (this->vertices_grafo.size() <= 2) {
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+
 };
 
 
