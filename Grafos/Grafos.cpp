@@ -16,23 +16,25 @@ int main()
 {
 	setlocale(LC_ALL, "Portuguese");
 
-	GrafoLista gr = GrafoLista(true, true);
+	GrafoMatriz gr = GrafoMatriz(true, false);
 
-	gr.inserirVertice("A");
-	gr.inserirVertice("B");
-	gr.inserirVertice("C");
-	gr.inserirVertice("D");
-	gr.inserirVertice("E");
+	gr.inserirVertice("A"); // 0
+	gr.inserirVertice("B"); // 1
+	gr.inserirVertice("C"); // 2
+	gr.inserirVertice("D"); // 3
+	gr.inserirVertice("E"); // 4
 
-	gr.inserirAresta(0, 1, 3);
-	gr.inserirAresta(0, 2, 5);
-	gr.inserirAresta(0, 3, 6);
-	gr.inserirAresta(0, 4, 8);
-	gr.inserirAresta(1, 3, 2);
-	gr.inserirAresta(1, 4, 11);
-	gr.inserirAresta(2, 4, 2);
+	gr.inserirAresta(0, 1);
+	gr.inserirAresta(0, 3);
+	gr.inserirAresta(1, 3);
+	gr.inserirAresta(3, 4);
+	gr.inserirAresta(4, 1);
+	gr.inserirAresta(1, 2);
+	gr.inserirAresta(2, 4);
 
-	vector<int> distancia;
+	cout << gr.welsh_e_powell();
+
+	/*vector<int> distancia;
 	distancia = gr.dijkstra(true, 0);
 
 	cout << "Distancia dos vertices para a origem" << endl;
@@ -54,7 +56,7 @@ int main()
 		cout << " | " << anterior.at(i);
 	}
 
-	cout << " | " << endl;
+	cout << " | " << endl;*/
 
 
 	return 0;

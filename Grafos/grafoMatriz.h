@@ -6,6 +6,7 @@
 using namespace std;
 
 class GrafoMatriz : public Grafo {
+public:
 	vector <string> vertices;
 	vector <vector <int>> arestas;
 
@@ -29,7 +30,7 @@ class GrafoMatriz : public Grafo {
 
 	bool inserirAresta(int origem, int destino, int peso = 1) {
 		this->arestas[origem][destino] = peso;
-		if (!this->direcionado) {
+		if (this->direcionado) {
 			this->arestas[destino][origem] = peso;
 		}
 		return true;
@@ -214,6 +215,87 @@ class GrafoMatriz : public Grafo {
 				return false;
 		}
 		return true;
+	}
+
+
+	bool verificaCorEmBranco(vector<int> cores) {
+		for (int x = 0; x < cores.size(); x++) {
+			if (cores[x] == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	int welsh_e_powell() {
+		vector<string> vertices_tmp = this->vertices;
+		vector<int> indices;
+		vector<int> historico;
+		vector<int> vertices_cores;
+		vector<int> grau;
+		vector<int> cores = { 1,2,3,4,5 };
+		int qtd_cores = 0;
+		for (int x = 0; x < vertices_tmp.size(); x++) {
+			grau.push_back(retornarVizinhos(x).size());
+			vertices_cores.push_back(0);
+			indices.push_back(x);
+			historico.push_back(x);
+		}
+		for (int x = vertices_tmp.size()-1; x > 0; x--) {
+			for (int i = 0; i < x; i++) {
+				if (grau[i] < grau[i + 1]) {
+					int aux = grau[i];
+					grau[i] = grau[i + 1];
+					grau[i + 1] = aux;
+					string aux2 = vertices_tmp[i];
+					vertices_tmp[i] = vertices_tmp[i + 1];
+					vertices_tmp[i + 1] = aux2;
+					int aux3 = historico[i];
+					historico[i] = historico[i + 1];
+					historico[i + 1] = aux3;
+				}
+			}
+		}
+		for (int x = 0; x < vertices_tmp.size(); x++) {
+			for (int y = 0; y < vertices.size(); y++) {
+				if (vertices_tmp[x] == vertices[y]) {
+					indices[y] = x;
+				}
+				if (historico[x] == -1)
+					historico[x] = x;
+			}
+		}
+		int cont = 0;
+		while (verificaCorEmBranco(vertices_cores)) {
+			int cor_atual = cores[cont];
+			for (int x=cont; x < vertices_tmp.size(); x++) {
+				vector <int> vizinhos = retornarVizinhos(historico[x]);
+				for (int i=0; i < vizinhos.size(); i++) {
+					if (vertices_cores[indices[vizinhos[i]]] == cor_atual)
+						break;
+					else if (i == vizinhos.size()-1) 
+						vertices_cores[x] = cor_atual;
+				}
+			}
+			cont++;
+		}
+		vector <int> cores_ja_foram;
+		for (int x = 0; x < vertices_cores.size(); x++) {
+			if (x == 0) {
+				cores_ja_foram.push_back(vertices_cores[x]);
+				qtd_cores++;
+			}
+			for (int i = 0; i < cores_ja_foram.size(); i++) {
+				if (vertices_cores[x] == cores_ja_foram[i])
+					break;
+				if (i == cores_ja_foram.size() - 1) {
+					qtd_cores++;
+					cores_ja_foram.push_back(vertices_cores[x]);
+				}
+			}
+		}
+		return qtd_cores;
 	}
 };
 #endif 
