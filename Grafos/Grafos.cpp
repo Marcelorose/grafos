@@ -26,13 +26,12 @@ int main()
 
 	gr.inserirAresta(0, 1);
 	gr.inserirAresta(0, 3);
-	gr.inserirAresta(1, 3);
 	gr.inserirAresta(3, 4);
 	gr.inserirAresta(4, 1);
 	gr.inserirAresta(1, 2);
 	gr.inserirAresta(2, 4);
 
-	cout << gr.welsh_e_powell();
+	cout << gr.dsatur();
 
 	/*vector<int> distancia;
 	distancia = gr.dijkstra(true, 0);
