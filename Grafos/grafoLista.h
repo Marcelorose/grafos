@@ -8,6 +8,7 @@
 #include "grafo.h"
 #include <stack>
 #include "dijkstra.h"
+#include "coloracao.h"
 
 using namespace std;
 
@@ -252,6 +253,87 @@ public:
 			}
 			return verticeAnterior;
 		}
+	}
+
+	bool podeColorir(vector<Coloracao> coloracao, int ver, int cor) {
+		int pos;
+		int adj_size = this->vertices.at(ver).adj.size();
+		int coloracao_at;
+		int vertices_at;
+		int posicao_at;
+		for (int i = 0; i < adj_size; i++)
+		{
+			for (int x = 0; x < coloracao.size(); x++)
+			{
+				coloracao_at = coloracao.at(x).vertice;
+				vertices_at = this->vertices.at(ver).adj.at(i).id;
+				if (coloracao.at(x).vertice == this->vertices.at(ver).adj.at(i).id) {
+					pos = x;
+					break;
+				}
+			}
+			posicao_at = coloracao.at(pos).cor;
+			if (coloracao.at(pos).cor == cor || coloracao.at(pos).cor == cor != 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	//A função de coloração de Welsh e Powell retorna a quantidade de cores necessárias para colorir o grafo
+	int welshPowel() {
+		int corMax = 1;
+		vector<Coloracao> welshPowel;
+		Coloracao wp;
+		wp.cor = 0;
+
+		for (int i = 0; i < this->vertices.size(); i++)
+		{
+			wp.vertice = i;
+			wp.grau = this->vertices.at(i).adj.size();
+			welshPowel.push_back(wp);
+		}
+
+		int tam = welshPowel.size();
+		Coloracao aux;
+		int sum = 0;
+
+		for (int i = 0; i < 10000; i++)
+		{
+			for (int n = 0; n < tam - 1; n++)
+			{
+				sum = n + 1;
+				if (welshPowel.at(n).grau < welshPowel.at(sum).grau) {
+					aux = welshPowel.at(n);
+					welshPowel.at(n) = welshPowel.at(sum);
+					welshPowel.at(sum) = aux;
+				}
+			}
+		}
+
+		int num_ver = welshPowel.size();
+		int ver_coloridos = 0;
+		int cont = 0;
+		int ver = welshPowel.at(cont).vertice;
+		int cor_atual = 1;
+
+		do
+		{
+			if (welshPowel.at(cont).cor == 0 && podeColorir(welshPowel, ver, cor_atual)) {
+				welshPowel.at(cont).cor = cor_atual;
+				ver_coloridos++;
+			}
+			cont++;
+			if (cont == num_ver) {
+				cont = 0;
+				cor_atual++;
+			}
+			ver = welshPowel.at(cont).vertice;
+		} while (ver_coloridos < num_ver);
+
+
+		return cor_atual;
 	}
 
 	bool isPlano() {
