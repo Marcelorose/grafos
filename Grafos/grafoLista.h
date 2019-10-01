@@ -273,18 +273,21 @@ public:
 				}
 			}
 			posicao_at = coloracao.at(pos).cor;
-			if (coloracao.at(pos).cor == cor || coloracao.at(pos).cor == cor != 0) {
+			//cout << "Cor da posicao: " << coloracao.at(pos).cor << endl;
+			if (coloracao.at(pos).cor == cor) {
+				//cout << "Falso" << endl;
 				return false;
 			}
 		}
+		//cout << "True" << endl;
 		return true;
 	}
 
 
 	//A função de coloração de Welsh e Powell retorna a quantidade de cores necessárias para colorir o grafo
-	int welshPowel() {
+	int welshPowell() {
 		int corMax = 1;
-		vector<Coloracao> welshPowel;
+		vector<Coloracao> welshPowell;
 		Coloracao wp;
 		wp.cor = 0;
 
@@ -292,10 +295,10 @@ public:
 		{
 			wp.vertice = i;
 			wp.grau = this->vertices.at(i).adj.size();
-			welshPowel.push_back(wp);
+			welshPowell.push_back(wp);
 		}
 
-		int tam = welshPowel.size();
+		int tam = welshPowell.size();
 		Coloracao aux;
 		int sum = 0;
 
@@ -304,32 +307,34 @@ public:
 			for (int n = 0; n < tam - 1; n++)
 			{
 				sum = n + 1;
-				if (welshPowel.at(n).grau < welshPowel.at(sum).grau) {
-					aux = welshPowel.at(n);
-					welshPowel.at(n) = welshPowel.at(sum);
-					welshPowel.at(sum) = aux;
+				if (welshPowell.at(n).grau < welshPowell.at(sum).grau) {
+					aux = welshPowell.at(n);
+					welshPowell.at(n) = welshPowell.at(sum);
+					welshPowell.at(sum) = aux;
 				}
 			}
 		}
 
-		int num_ver = welshPowel.size();
+		int num_ver = welshPowell.size();
 		int ver_coloridos = 0;
 		int cont = 0;
-		int ver = welshPowel.at(cont).vertice;
+		int ver = welshPowell.at(cont).vertice;
 		int cor_atual = 1;
 
 		do
 		{
-			if (welshPowel.at(cont).cor == 0 && podeColorir(welshPowel, ver, cor_atual)) {
-				welshPowel.at(cont).cor = cor_atual;
+			if (welshPowell.at(cont).cor == 0 && podeColorir(welshPowell, ver, cor_atual)) {
+				welshPowell.at(cont).cor = cor_atual;
 				ver_coloridos++;
+				//cout << ver_coloridos << endl;
 			}
 			cont++;
 			if (cont == num_ver) {
-				cont = 0;
+  				cont = 0;
 				cor_atual++;
 			}
-			ver = welshPowel.at(cont).vertice;
+				//cout << cont << "   ";
+			ver = welshPowell.at(cont).vertice;
 		} while (ver_coloridos < num_ver);
 
 

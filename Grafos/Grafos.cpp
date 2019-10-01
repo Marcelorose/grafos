@@ -36,8 +36,8 @@ int main()
 	*/
 
 	string line;
-	ifstream myfile("Grafos/trabalho-28cores.txt"); // ifstream = padrão ios:in
-	ifstream myfile2("Grafos/trabalho-28cores.txt"); // ifstream = padrão ios:in
+	ifstream myfile("Grafos/trabalho-234cores.txt"); // ifstream = padrão ios:in
+	ifstream myfile2("Grafos/trabalho-234cores.txt"); // ifstream = padrão ios:in
 	int auxVertices, vertices, auxArestas, arestas, auxOrigem, origem, auxDestino, destino, auxPeso, peso;
 	bool auxDirecionado, direcionado = false, auxPonderado, ponderado = false;
 	int cont = 0;
@@ -86,8 +86,8 @@ int main()
 
 	else cout << "Unable to open file";
 
-	cout << gr.welshPowel();
-	//gr.imprimirGrafo();
+	cout << gr.welshPowell();
+	
 
 	/*vector<int> distancia;
 	distancia = gr.dijkstra(true, 0);
