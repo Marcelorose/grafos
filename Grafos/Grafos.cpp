@@ -4,9 +4,8 @@
 #include "pch.h"
 #include "grafoLista.h"
 #include "grafoMatriz.h"
+#include "grafoArquivo.h"
 #include <vector>
-#include <string>
-#include <fstream>
 #include <locale.h>
 #include <iostream>
 #include <stack>
@@ -17,74 +16,8 @@ int main()
 {
 	setlocale(LC_ALL, "Portuguese");
 
-	/*
-	gr.inserirVertice("A");
-	gr.inserirVertice("B");
-	gr.inserirVertice("C");
-	gr.inserirVertice("D");
-	gr.inserirVertice("E");
 
-	gr.inserirAresta(0, 1);
-	gr.inserirAresta(0, 3);
-	gr.inserirAresta(1, 2);
-	gr.inserirAresta(1, 3);
-	gr.inserirAresta(1, 4);
-	gr.inserirAresta(2, 4);
-	gr.inserirAresta(3, 4);
-
-	cout << gr.welshPowel();
-	*/
-
-	string line;
-	ifstream myfile("Grafos/trabalho-234cores.txt"); // ifstream = padrão ios:in
-	ifstream myfile2("Grafos/trabalho-234cores.txt"); // ifstream = padrão ios:in
-	int auxVertices, vertices, auxArestas, arestas, auxOrigem, origem, auxDestino, destino, auxPeso, peso;
-	bool auxDirecionado, direcionado = false, auxPonderado, ponderado = false;
-	int cont = 0;
-	
-	if (myfile.is_open())
-	{
-		while (myfile >> auxVertices >> auxArestas >> auxDirecionado >> auxPonderado)
-		{
-			vertices = auxVertices;
-			arestas = auxArestas;
-			direcionado = auxDirecionado;
-			ponderado = auxPonderado;
-		}
-
-		myfile.close();
-	}
-	else cout << "Unable to open file";
-
-	GrafoLista gr = GrafoLista(direcionado, ponderado);
-
-	
-	if (myfile2.is_open()) {
-		
-		while (!myfile2.eof()) //enquanto end of file for false continua
-		{
-			getline(myfile2, line); // como foi aberto em modo texto(padrão)
-			
-			if (cont > 0 && cont == vertices) {
-				//cout << line << endl;
-				gr.inserirVertice(line);
-				while (myfile2 >> auxOrigem >> auxDestino)
-				{
-					origem = auxOrigem;
-					destino = auxDestino;
-					gr.inserirAresta(origem, destino);
-				}
-			}
-			else if(cont > 0 && cont <= vertices){
-				gr.inserirVertice(line);
-			}
-			
-			cont++;
-		}
-		myfile2.close();
-	}
-
-	else cout << "Unable to open file";
+	GrafoLista gr = criarGrafoArquivo <GrafoLista>("Grafos/trabalho-28cores.txt");
 
 	cout << gr.welshPowell();
 	

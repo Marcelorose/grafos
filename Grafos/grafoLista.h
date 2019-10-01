@@ -256,33 +256,27 @@ public:
 	}
 
 	bool podeColorir(vector<Coloracao> coloracao, int ver, int cor) {
+		
+		vector<Adjacente> adjacentes = this->vertices.at(ver).adj;
 		int pos;
-		int adj_size = this->vertices.at(ver).adj.size();
-		int coloracao_at;
-		int vertices_at;
-		int posicao_at;
-		for (int i = 0; i < adj_size; i++)
+
+		for (int j = 0; j < adjacentes.size(); j++)
 		{
-			for (int x = 0; x < coloracao.size(); x++)
+			for (int i = 0; i < coloracao.size(); i++)
 			{
-				coloracao_at = coloracao.at(x).vertice;
-				vertices_at = this->vertices.at(ver).adj.at(i).id;
-				if (coloracao.at(x).vertice == this->vertices.at(ver).adj.at(i).id) {
-					pos = x;
+				if (coloracao.at(i).vertice == adjacentes.at(j).id) {
+					pos = i;
 					break;
 				}
 			}
-			posicao_at = coloracao.at(pos).cor;
-			//cout << "Cor da posicao: " << coloracao.at(pos).cor << endl;
+
 			if (coloracao.at(pos).cor == cor) {
-				//cout << "Falso" << endl;
 				return false;
 			}
 		}
-		//cout << "True" << endl;
+		
 		return true;
 	}
-
 
 	//A função de coloração de Welsh e Powell retorna a quantidade de cores necessárias para colorir o grafo
 	int welshPowell() {
@@ -302,7 +296,7 @@ public:
 		Coloracao aux;
 		int sum = 0;
 
-		for (int i = 0; i < 10000; i++)
+		for (int i = 0; i < tam; i++)
 		{
 			for (int n = 0; n < tam - 1; n++)
 			{
@@ -315,8 +309,7 @@ public:
 			}
 		}
 
-		int num_ver = welshPowell.size();
-		int ver_coloridos = 0;
+		int vertices_coloridos = 0;
 		int cont = 0;
 		int ver = welshPowell.at(cont).vertice;
 		int cor_atual = 1;
@@ -325,17 +318,17 @@ public:
 		{
 			if (welshPowell.at(cont).cor == 0 && podeColorir(welshPowell, ver, cor_atual)) {
 				welshPowell.at(cont).cor = cor_atual;
-				ver_coloridos++;
-				//cout << ver_coloridos << endl;
+				vertices_coloridos++;
 			}
-			cont++;
-			if (cont == num_ver) {
-  				cont = 0;
+			if (cont == welshPowell.size() - 1) {
+				cont = 0;
 				cor_atual++;
 			}
-				//cout << cont << "   ";
+			else {
+				cont++;
+			}
 			ver = welshPowell.at(cont).vertice;
-		} while (ver_coloridos < num_ver);
+		} while (vertices_coloridos < welshPowell.size());
 
 
 		return cor_atual;
