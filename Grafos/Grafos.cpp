@@ -17,24 +17,43 @@ int main()
 	setlocale(LC_ALL, "Portuguese");
 
 
-	//GrafoLista gr = criarGrafoArquivo <GrafoLista>("Grafos/trabalho-28cores.txt");
-	GrafoLista gr = GrafoLista(false, false);
+	GrafoMatriz gr = criarGrafoArquivo <GrafoMatriz>("Grafos/trabalho-28cores.txt");
 
-	gr.inserirVertice("A");
-	gr.inserirVertice("B");
-	gr.inserirVertice("C");
-	gr.inserirVertice("D");
-	gr.inserirVertice("E");
+	cout << gr.welsh_e_powell();
 
-	gr.inserirAresta(0, 1);
-	gr.inserirAresta(0, 3);
-	gr.inserirAresta(1, 4);
-	gr.inserirAresta(1, 2);
-	gr.inserirAresta(3, 4);
-	gr.inserirAresta(2, 4);
+	/*GrafoMatriz gm = new GrafoMatriz();
 
-	cout << gr.dsatur();
-	
+	gm.inserirVertice("A"); //0
+	gm.inserirVertice("B"); //1
+	gm.inserirVertice("C"); //2
+	gm.inserirVertice("D"); //3
+	gm.inserirVertice("E"); //4
+	gm.inserirVertice("F"); //5
+	gm.inserirVertice("G"); //6 
+	gm.inserirVertice("H"); //7
+	gm.inserirVertice("I"); //8
+	gm.inserirVertice("J"); //9
+
+	gm.inserirAresta(0, 1);
+	gm.inserirAresta(1, 2);
+	gm.inserirAresta(5, 1);
+	gm.inserirAresta(5, 2);
+	gm.inserirAresta(0, 3);
+	gm.inserirAresta(9, 8);
+	gm.inserirAresta(6, 3);
+	gm.inserirAresta(0, 2);
+	gm.inserirAresta(2, 4);
+	gm.inserirAresta(0, 6);
+	gm.inserirAresta(8, 4);
+	gm.inserirAresta(8, 1);
+	gm.inserirAresta(0, 9);
+	gm.inserirAresta(7, 1);
+	gm.inserirAresta(0, 1);
+	gm.inserirAresta(6, 0);
+	gm.inserirAresta(3, 5);
+	gm.inserirAresta(6, 2);
+
+	cout << gm.welsh_e_powell();*/
 
 	/*vector<int> distancia;
 	distancia = gr.dijkstra(true, 0);

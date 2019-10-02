@@ -65,16 +65,8 @@ public:
 		int percorrer = vertices.size();
 		int percorrer_aresta = arestas.size();
 		for (int i = 0; i < percorrer; i++) {
-			if (this->direcionado)
-				percorrer_aresta = i;
-			for (int x = 0; x < percorrer_aresta; x++) {
-				if (arestas[i][x] != 0 & i == vertice) {
-					vizinhos.push_back(x);
-				}
-				else if (arestas[i][x] != 0 & x == vertice) {
-					vizinhos.push_back(i);
-				}
-			}
+			if (arestas[vertice][i] != 0)
+				vizinhos.push_back(i);
 		}
 		return vizinhos;
 	}
@@ -234,7 +226,10 @@ public:
 		vector<int> historico;
 		vector<int> vertices_cores;
 		vector<int> grau;
-		vector<int> cores = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50 };
+		vector<int> cores;
+		for (int x = 1; x < 1000; x++) {
+			cores.push_back(x);
+		}
 		int qtd_cores = 0;
 		for (int x = 0; x < vertices_tmp.size(); x++) {
 			grau.push_back(retornarVizinhos(x).size());
@@ -268,34 +263,35 @@ public:
 		}
 		int cont = 0;
 		while (verificaCorEmBranco(vertices_cores)) {
+			int verificador = 0;
 			int cor_atual = cores[cont];
 			for (int x=cont; x < vertices_tmp.size(); x++) {
 				vector <int> vizinhos = retornarVizinhos(historico[x]);
+				if (vizinhos.size() == 0 && vertices_cores[x] == 0) 
+					vertices_cores[x] = cor_atual;
 				for (int i=0; i < vizinhos.size(); i++) {
-					if (vertices_cores[indices[vizinhos[i]]] == cor_atual)
+					if (vertices_cores[indices[vizinhos[i]]] == cor_atual) 
 						break;
-					else if (i == vizinhos.size()-1)
+					else if (i == vizinhos.size() - 1) {
 						vertices_cores[x] = cor_atual;
+						verificador = 1;
+					}
 				}
 			}
 			cont++;
 		}
 		vector <int> cores_ja_foram;
 		for (int x = 0; x < vertices_cores.size(); x++) {
-			if (x == 0) {
+			if (x == 0)
 				cores_ja_foram.push_back(vertices_cores[x]);
-				qtd_cores++;
-			}
 			for (int i = 0; i < cores_ja_foram.size(); i++) {
 				if (vertices_cores[x] == cores_ja_foram[i])
 					break;
-				if (i == cores_ja_foram.size() - 1) {
-					qtd_cores++;
+				if (i == cores_ja_foram.size() - 1) 
 					cores_ja_foram.push_back(vertices_cores[x]);
-				}
 			}
 		}
-		return qtd_cores;
+		return cores_ja_foram.size();
 	}
 
 	int dsatur() {
@@ -374,6 +370,7 @@ public:
 					}
 				}
 			}
+			cout << cores.size() << "\n";
 			cont++;
 		}
 		vector <int> cores_ja_foram;
