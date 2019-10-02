@@ -334,7 +334,6 @@ public:
 		return cor_atual;
 	}
 
-
 	int verticeDsatur(vector<Dsatur> dsatur){
 		
 		Dsatur aux = dsatur.at(0);
@@ -353,7 +352,7 @@ public:
 		}
 		for (int i = 0; i < tam; i++)
 		{
-			if (dsatur.at(i).saturacao == aux.saturacao) {
+			if (dsatur.at(i).saturacao == aux.saturacao && dsatur.at(i).cor != 0) {
 				saturacao.push_back(dsatur.at(i));
 			}
 		}
@@ -371,8 +370,105 @@ public:
 				}
 			}
 		}
+		if (saturacao.size() == 0) {
+			return aux.vertice;
+		}
+		else {
+			return saturacao.at(0).vertice;
+		}
+	}
 
-		return saturacao.at(0).vertice;
+	int findPos(vector<Dsatur> dsatur, int ver) {
+		
+		int tam = dsatur.size();
+
+		for (int i = 0; i < tam; i++)
+		{
+			if (dsatur.at(i).vertice == ver) {
+				return i;
+			}
+		}
+	}
+
+	int qualCorPintar(vector<Dsatur> dsatur, int ver) {
+		vector<Adjacente> adjacentes = this->vertices.at(ver).adj;
+		vector<int> coresUsadas;
+		int cor = 1;
+
+		for (int i = 0; i < adjacentes.size(); i++)
+		{
+			for (int j = 0; j < dsatur.size(); j++)
+			{
+				if (adjacentes.at(i).id == dsatur.at(j).vertice) {
+					if (dsatur.at(j).cor != 0) {
+						coresUsadas.push_back(dsatur.at(j).cor);
+					}
+					break;
+				}
+			}
+		}
+
+		int sum = 0;
+		int tam = coresUsadas.size();
+		int aux = 0;
+
+		for (int i = 0; i < tam; i++)
+		{
+			for (int n = 0; n < tam - 1; n++)
+			{
+				sum = n + 1;
+				if (coresUsadas.at(n) > coresUsadas.at(sum)) {
+					aux = coresUsadas.at(n);
+					coresUsadas.at(n) = coresUsadas.at(sum);
+					coresUsadas.at(sum) = aux;
+				}
+			}
+		}
+
+		if ((coresUsadas.size() > 0 && coresUsadas.at(0) > 1) || coresUsadas.size() == 0) {
+			return 1;
+		}
+
+		sum = 0;
+
+		for (int i = 0; i < tam - 1; i++)
+		{
+			sum = i + 1;
+			if (coresUsadas.at(sum) - coresUsadas.at(i) >= 2) {
+				return coresUsadas.at(i) + 1;
+			}
+		}
+
+		return coresUsadas.size() + 1;
+	}
+
+	void saturarVertices(vector<Dsatur> &dsatur, int ver) {
+		vector<Adjacente> adjacentes = this->vertices.at(ver).adj;
+		
+		for (int i = 0; i < adjacentes.size(); i++)
+		{
+			for (int j = 0; j < dsatur.size(); j++)
+			{
+				if (adjacentes.at(i).id == dsatur.at(j).vertice) {
+					dsatur.at(j).saturacao++;
+					break;
+				}
+			}
+		}
+	}
+
+	int qtdCoresDsatur(vector<Dsatur> dsatur) {
+		int tam = dsatur.size();
+		int cores = 0;
+
+		for (int i = 0; i < tam; i++)
+		{
+			if (dsatur.at(i).cor > cores) {
+				cores = dsatur.at(i).cor;
+			}
+		}
+
+		return cores;
 	}
 
 	int dsatur() {
@@ -408,16 +504,20 @@ public:
 		int vertices_coloridos = 0;
 		int tam_dsatur = dsatur.size();
 		int ver_dsatur = verticeDsatur(dsatur);
+		int cor = 0;
+		
 
 		do
 		{
-			if () {
-			
-			}
+			 cor = qualCorPintar(dsatur, ver_dsatur);
+			 dsatur.at(findPos(dsatur, ver_dsatur)).cor = cor;
+			 saturarVertices(dsatur, ver_dsatur);
+			 vertices_coloridos++;
+			 ver_dsatur = verticeDsatur(dsatur);
 
 		} while (vertices_coloridos < tam_dsatur);
 
-		return -1;
+		return qtdCoresDsatur(dsatur);
 	}
 
 	bool isPlano() {

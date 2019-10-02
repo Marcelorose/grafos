@@ -8,8 +8,8 @@ struct Dsatur
 {
 	int vertice;
 	int grau;
-	int saturacao;
 	int cor;
+	int saturacao;
 };
 
 #endif

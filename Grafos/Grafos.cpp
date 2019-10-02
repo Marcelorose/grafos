@@ -17,7 +17,21 @@ int main()
 	setlocale(LC_ALL, "Portuguese");
 
 
-	GrafoLista gr = criarGrafoArquivo <GrafoLista>("Grafos/trabalho-28cores.txt");
+	//GrafoLista gr = criarGrafoArquivo <GrafoLista>("Grafos/trabalho-28cores.txt");
+	GrafoLista gr = GrafoLista(false, false);
+
+	gr.inserirVertice("A");
+	gr.inserirVertice("B");
+	gr.inserirVertice("C");
+	gr.inserirVertice("D");
+	gr.inserirVertice("E");
+
+	gr.inserirAresta(0, 1);
+	gr.inserirAresta(0, 3);
+	gr.inserirAresta(1, 4);
+	gr.inserirAresta(1, 2);
+	gr.inserirAresta(3, 4);
+	gr.inserirAresta(2, 4);
 
 	cout << gr.dsatur();
 	
