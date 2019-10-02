@@ -19,7 +19,7 @@ int main()
 
 	GrafoLista gr = criarGrafoArquivo <GrafoLista>("Grafos/trabalho-28cores.txt");
 
-	cout << gr.welshPowell();
+	cout << gr.dsatur();
 	
 
 	/*vector<int> distancia;
