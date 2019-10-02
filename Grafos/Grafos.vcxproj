@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="coloracao.h" />
     <ClInclude Include="dijkstra.h" />
+    <ClInclude Include="dsatur.h" />
     <ClInclude Include="grafoArquivo.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>

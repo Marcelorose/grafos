@@ -9,6 +9,7 @@
 #include <stack>
 #include "dijkstra.h"
 #include "coloracao.h"
+#include "dsatur.h"
 
 using namespace std;
 
@@ -280,7 +281,6 @@ public:
 
 	//A função de coloração de Welsh e Powell retorna a quantidade de cores necessárias para colorir o grafo
 	int welshPowell() {
-		int corMax = 1;
 		vector<Coloracao> welshPowell;
 		Coloracao wp;
 		wp.cor = 0;
@@ -332,6 +332,92 @@ public:
 
 
 		return cor_atual;
+	}
+
+
+	int verticeDsatur(vector<Dsatur> dsatur){
+		
+		Dsatur aux = dsatur.at(0);
+		int pos = 0;
+		vector<Dsatur> saturacao;
+		int tam = dsatur.size();
+		int tam_sat;
+		int atual_p1;
+
+		for (int i = 0; i < tam - 1; i++)
+		{
+			atual_p1 = i + 1;
+			if (dsatur.at(atual_p1).saturacao > aux.saturacao) {
+				aux = dsatur.at(atual_p1);
+			}
+		}
+		for (int i = 0; i < tam; i++)
+		{
+			if (dsatur.at(i).saturacao == aux.saturacao) {
+				saturacao.push_back(dsatur.at(i));
+			}
+		}
+		tam_sat = saturacao.size();
+		int sum = 0;
+		for (int i = 0; i < tam_sat; i++)
+		{
+			for (int n = 0; n < tam_sat - 1; n++)
+			{
+				sum = n + 1;
+				if (saturacao.at(n).grau < saturacao.at(sum).grau) {
+					aux = saturacao.at(n);
+					saturacao.at(n) = saturacao.at(sum);
+					saturacao.at(sum) = aux;
+				}
+			}
+		}
+
+		return saturacao.at(0).vertice;
+	}
+
+	int dsatur() {
+		vector<Dsatur> dsatur;
+		Dsatur ds;
+		ds.cor = 0;
+		ds.saturacao = 0;
+
+		for (int i = 0; i < this->vertices.size(); i++)
+		{
+			ds.vertice = i;
+			ds.grau = this->vertices.at(i).adj.size();
+			dsatur.push_back(ds);
+		}
+
+		int tam = dsatur.size();
+		Dsatur aux;
+		int sum = 0;
+
+		for (int i = 0; i < tam; i++)
+		{
+			for (int n = 0; n < tam - 1; n++)
+			{
+				sum = n + 1;
+				if (dsatur.at(n).grau < dsatur.at(sum).grau) {
+					aux = dsatur.at(n);
+					dsatur.at(n) = dsatur.at(sum);
+					dsatur.at(sum) = aux;
+				}
+			}
+		}
+
+		int vertices_coloridos = 0;
+		int tam_dsatur = dsatur.size();
+		int ver_dsatur = verticeDsatur(dsatur);
+
+		do
+		{
+			if () {
+			
+			}
+
+		} while (vertices_coloridos < tam_dsatur);
+
+		return -1;
 	}
 
 	bool isPlano() {

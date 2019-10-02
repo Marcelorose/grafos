@@ -1,13 +1,14 @@
 #pragma once
-#ifndef COLORACAO_H
-#define COLORACAO_H
+#ifndef DSATUR_H
+#define DSATUR_H
 
 #include <iostream>
 
-struct Coloracao
+struct Dsatur
 {
 	int vertice;
 	int grau;
+	int saturacao;
 	int cor;
 };
 
