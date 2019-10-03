@@ -62,9 +62,7 @@ public:
 
 	vector<int> retornarVizinhos(int vertice) {
 		vector <int> vizinhos;
-		int percorrer = vertices.size();
-		int percorrer_aresta = arestas.size();
-		for (int i = 0; i < percorrer; i++) {
+		for (int i = 0; i < vertices.size(); i++) {
 			if (arestas[vertice][i] != 0)
 				vizinhos.push_back(i);
 		}
@@ -220,6 +218,16 @@ public:
 	}
 
 
+	int verificaProximo(vector<int> vetor) {
+		for (int x = 0; x < vetor.size(); x++) {
+			if (vetor[x] == 0) {
+				return x;
+			}
+		}
+		return vetor.size() - 1;
+	}
+
+
 	int welsh_e_powell() {
 		vector<string> vertices_tmp = this->vertices;
 		vector<int> indices;
@@ -230,7 +238,6 @@ public:
 		for (int x = 1; x < 1000; x++) {
 			cores.push_back(x);
 		}
-		int qtd_cores = 0;
 		for (int x = 0; x < vertices_tmp.size(); x++) {
 			grau.push_back(retornarVizinhos(x).size());
 			vertices_cores.push_back(0);
@@ -253,32 +260,30 @@ public:
 			}
 		}
 		for (int x = 0; x < vertices_tmp.size(); x++) {
-			for (int y = 0; y < vertices.size(); y++) {
-				if (vertices_tmp[x] == vertices[y]) {
+			for (int y = 0; y < vertices_tmp.size(); y++) {
+				if (vertices_tmp[x] == vertices[y]) 
 					indices[y] = x;
-				}
-				if (historico[x] == -1)
-					historico[x] = x;
 			}
 		}
-		int cont = 0;
+		int cont_cor = 0;
+		int cont_geral = 0;
 		while (verificaCorEmBranco(vertices_cores)) {
-			int verificador = 0;
-			int cor_atual = cores[cont];
-			for (int x=cont; x < vertices_tmp.size(); x++) {
+			int cor_atual = cores[cont_cor];
+			for (int x= verificaProximo(vertices_cores); x < vertices_tmp.size(); x++) {
 				vector <int> vizinhos = retornarVizinhos(historico[x]);
-				if (vizinhos.size() == 0 && vertices_cores[x] == 0) 
+				if (vizinhos.size() == 0 && vertices_cores[x] == 0)
 					vertices_cores[x] = cor_atual;
-				for (int i=0; i < vizinhos.size(); i++) {
-					if (vertices_cores[indices[vizinhos[i]]] == cor_atual) 
-						break;
-					else if (i == vizinhos.size() - 1) {
-						vertices_cores[x] = cor_atual;
-						verificador = 1;
+				else if (vertices_cores[x] == 0) {
+					for (int i = 0; i < vizinhos.size(); i++) {
+						if (vertices_cores[indices[vizinhos[i]]] == cor_atual)
+							break;
+						else if (i == vizinhos.size() - 1) {
+							vertices_cores[x] = cor_atual;
+						}
 					}
 				}
 			}
-			cont++;
+			cont_cor++;
 		}
 		vector <int> cores_ja_foram;
 		for (int x = 0; x < vertices_cores.size(); x++) {
@@ -302,7 +307,6 @@ public:
 		vector<int> vertices_cores;
 		vector<int> grau;
 		vector<int> cores = { 1,2,3,4,5 };
-		int qtd_cores = 0;
 		for (int x = 0; x < vertices_tmp.size(); x++) {
 			grau.push_back(retornarVizinhos(x).size());
 			vertices_cores.push_back(0);
@@ -370,25 +374,20 @@ public:
 					}
 				}
 			}
-			cout << cores.size() << "\n";
 			cont++;
 		}
 		vector <int> cores_ja_foram;
 		for (int x = 0; x < vertices_cores.size(); x++) {
-			if (x == 0) {
+			if (x == 0)
 				cores_ja_foram.push_back(vertices_cores[x]);
-				qtd_cores++;
-			}
 			for (int i = 0; i < cores_ja_foram.size(); i++) {
 				if (vertices_cores[x] == cores_ja_foram[i])
 					break;
-				if (i == cores_ja_foram.size() - 1) {
-					qtd_cores++;
+				if (i == cores_ja_foram.size() - 1)
 					cores_ja_foram.push_back(vertices_cores[x]);
-				}
 			}
 		}
-		return qtd_cores;
+		return cores_ja_foram.size();
 	}
 };
 #endif 
