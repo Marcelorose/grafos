@@ -20,7 +20,7 @@ int main()
 	GrafoMatriz gr = criarGrafoArquivo <GrafoMatriz>("Grafos/trabalho-28cores.txt");
 
 
-	cout << gr.welsh_e_powell();
+	cout << gr.dsatur();
 
 	/*GrafoMatriz gm = new GrafoMatriz(1,0);
 
