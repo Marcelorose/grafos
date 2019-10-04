@@ -62,9 +62,13 @@ public:
 
 	vector<int> retornarVizinhos(int vertice) {
 		vector <int> vizinhos;
-		for (int i = 0; i < vertices.size(); i++) {
-			if (arestas[vertice][i] != 0)
-				vizinhos.push_back(i);
+		for (int x = 0; x < vertices.size(); x++) {
+			if (arestas[vertice][x] != 0) {
+				vizinhos.push_back(x);
+			}
+			else if (arestas[x][vertice] != 0) {
+				vizinhos.push_back(x);
+			}
 		}
 		return vizinhos;
 	}
@@ -269,16 +273,18 @@ public:
 		int cont_geral = 0;
 		while (verificaCorEmBranco(vertices_cores)) {
 			int cor_atual = cores[cont_cor];
-			for (int x= verificaProximo(vertices_cores); x < vertices_tmp.size(); x++) {
-				vector <int> vizinhos = retornarVizinhos(historico[x]);
-				if (vizinhos.size() == 0 && vertices_cores[x] == 0)
-					vertices_cores[x] = cor_atual;
-				else if (vertices_cores[x] == 0) {
-					for (int i = 0; i < vizinhos.size(); i++) {
-						if (vertices_cores[indices[vizinhos[i]]] == cor_atual)
-							break;
-						else if (i == vizinhos.size() - 1) {
-							vertices_cores[x] = cor_atual;
+			for (int x = verificaProximo(vertices_cores); x < vertices_tmp.size(); x++) {
+				if (vertices_cores[x] == 0) {
+					vector <int> vizinhos = retornarVizinhos(historico[x]);
+					if (vizinhos.size() == 0)
+						vertices_cores[x] = cor_atual;
+					else {
+						for (int i = 0; i < vizinhos.size(); i++) {
+							if (vertices_cores[indices[vizinhos[i]]] == cor_atual)
+								break;
+							else if (i == vizinhos.size() - 1) {
+								vertices_cores[x] = cor_atual;
+							}
 						}
 					}
 				}
@@ -306,7 +312,10 @@ public:
 		vector<int> historico;
 		vector<int> vertices_cores;
 		vector<int> grau;
-		vector<int> cores = { 1,2,3,4,5 };
+		vector<int> cores;
+		for (int x = 1; x < 1000; x++) {
+			cores.push_back(x);
+		}
 		for (int x = 0; x < vertices_tmp.size(); x++) {
 			grau.push_back(retornarVizinhos(x).size());
 			vertices_cores.push_back(0);
@@ -356,22 +365,24 @@ public:
 			for (int g = 0; g < cores.size(); g++) {
 				int cor_atual = cores[g];
 				for (int x = 0; x < saturados.size(); x++) {
-					vector <int> vizinhos = retornarVizinhos(saturados[x]);
-					if (trocou == 1)
-						break;
-					for (int i = 0; i < vizinhos.size(); i++) {
-						if (vertices_cores[indices[vizinhos[i]]] == cor_atual)
+						vector <int> vizinhos = retornarVizinhos(saturados[x]);
+						if (trocou == 1)
 							break;
-						else if (i == vizinhos.size() - 1) {
+						if (vizinhos.size() == 0 and vertices_cores[indices[saturados[x]]] == 0)
 							vertices_cores[indices[saturados[x]]] = cor_atual;
-							for (int y = 0; y < vizinhos.size(); y++) {
-								if (vertices_cores[indices[vizinhos[y]]] != cor_atual) {
-									saturacao[indices[vizinhos[y]]]++;
-									trocou = 1;
+						for (int i = 0; i < vizinhos.size(); i++) {
+							if (vertices_cores[indices[vizinhos[i]]] == cor_atual)
+								break;
+							else if (i == vizinhos.size() - 1) {
+								vertices_cores[indices[saturados[x]]] = cor_atual;
+								for (int y = 0; y < vizinhos.size(); y++) {
+									if (vertices_cores[indices[vizinhos[y]]] != cor_atual) {
+										saturacao[indices[vizinhos[y]]]++;
+										trocou = 1;
+									}
 								}
 							}
 						}
-					}
 				}
 			}
 			cont++;
