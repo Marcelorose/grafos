@@ -10,6 +10,7 @@ struct Dsatur
 	int grau;
 	int cor;
 	int saturacao;
+	vector<int> coresAdjacentes;
 };
 
 #endif

@@ -341,23 +341,53 @@ public:
 		vector<Dsatur> saturacao;
 		int tam = dsatur.size();
 		int tam_sat;
-		int atual_p1;
+		int atual_p1 = 0;
+		Dsatur auxD;
+		int sum = 0;
+
+		for (int i = 0; i < tam; i++)
+		{
+			for (int n = 0; n < tam - 1; n++)
+			{
+				sum = n + 1;
+				if (dsatur.at(n).saturacao < dsatur.at(sum).saturacao) {
+					auxD = dsatur.at(n);
+					dsatur.at(n) = dsatur.at(sum);
+					dsatur.at(sum) = auxD;
+				}
+			}
+		}
+
+		for (int i = 0; i < tam; i++)
+		{
+			if (dsatur.at(i).cor == 0) {
+				aux = dsatur.at(i);
+				break;
+			}
+		}
 
 		for (int i = 0; i < tam - 1; i++)
 		{
 			atual_p1 = i + 1;
-			if (dsatur.at(atual_p1).saturacao > aux.saturacao) {
+			if (dsatur.at(i).cor == 0 && dsatur.at(i).saturacao > aux.saturacao) {
 				aux = dsatur.at(atual_p1);
+				atual_p1 = i;
 			}
 		}
+
 		for (int i = 0; i < tam; i++)
 		{
-			if (dsatur.at(i).saturacao == aux.saturacao && dsatur.at(i).cor != 0) {
+			if (dsatur.at(i).saturacao == aux.saturacao && dsatur.at(i).cor == 0) {
 				saturacao.push_back(dsatur.at(i));
 			}
 		}
 		tam_sat = saturacao.size();
-		int sum = 0;
+		
+		if (tam_sat == 0) {
+			return aux.vertice;
+		}
+
+		sum = 0;
 		for (int i = 0; i < tam_sat; i++)
 		{
 			for (int n = 0; n < tam_sat - 1; n++)
@@ -370,12 +400,9 @@ public:
 				}
 			}
 		}
-		if (saturacao.size() == 0) {
-			return aux.vertice;
-		}
-		else {
-			return saturacao.at(0).vertice;
-		}
+		
+		return saturacao.at(0).vertice;
+		
 	}
 
 	int findPos(vector<Dsatur> dsatur, int ver) {
@@ -394,6 +421,7 @@ public:
 		vector<Adjacente> adjacentes = this->vertices.at(ver).adj;
 		vector<int> coresUsadas;
 		int cor = 1;
+		bool check = false;
 
 		for (int i = 0; i < adjacentes.size(); i++)
 		{
@@ -401,7 +429,17 @@ public:
 			{
 				if (adjacentes.at(i).id == dsatur.at(j).vertice) {
 					if (dsatur.at(j).cor != 0) {
-						coresUsadas.push_back(dsatur.at(j).cor);
+						for (int x = 0; x < coresUsadas.size(); x++)
+						{
+							if (dsatur.at(j).cor == coresUsadas.at(x)) {
+								check = true;
+								break;
+							}
+						}
+						if (!check) {
+							coresUsadas.push_back(dsatur.at(j).cor);
+						}
+						check = false;
 					}
 					break;
 				}
@@ -442,15 +480,26 @@ public:
 		return coresUsadas.size() + 1;
 	}
 
-	void saturarVertices(vector<Dsatur> &dsatur, int ver) {
+	void saturarVertices(vector<Dsatur> &dsatur, int ver, int cor) {
 		vector<Adjacente> adjacentes = this->vertices.at(ver).adj;
-		
+		bool existeCor = false;
+
 		for (int i = 0; i < adjacentes.size(); i++)
 		{
 			for (int j = 0; j < dsatur.size(); j++)
 			{
 				if (adjacentes.at(i).id == dsatur.at(j).vertice) {
-					dsatur.at(j).saturacao++;
+					for (int x = 0; x < dsatur.at(j).coresAdjacentes.size(); x++)
+					{
+						if (dsatur.at(j).coresAdjacentes.at(x) == cor) {
+							existeCor = true;
+							break;
+						}
+					}
+					if (!existeCor) {
+						dsatur.at(j).coresAdjacentes.push_back(cor);
+					}
+					dsatur.at(j).saturacao = dsatur.at(j).coresAdjacentes.size();
 					break;
 				}
 			}
@@ -511,7 +560,7 @@ public:
 		{
 			 cor = qualCorPintar(dsatur, ver_dsatur);
 			 dsatur.at(findPos(dsatur, ver_dsatur)).cor = cor;
-			 saturarVertices(dsatur, ver_dsatur);
+			 saturarVertices(dsatur, ver_dsatur, cor);
 			 vertices_coloridos++;
 			 ver_dsatur = verticeDsatur(dsatur);
 
