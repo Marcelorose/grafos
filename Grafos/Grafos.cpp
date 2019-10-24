@@ -17,28 +17,33 @@ int main()
 	setlocale(LC_ALL, "Portuguese");
 
 
-	
-	GrafoMatriz gr = criarGrafoArquivo <GrafoMatriz>("Grafos/trabalho-28cores.txt");
+
+	/*GrafoMatriz gr = criarGrafoArquivo <GrafoMatriz>("Grafos/trabalho-28cores.txt");
 
 
-	cout << gr.dsatur();
+	cout << gr.dsatur();*/
 
-	/*GrafoMatriz gm = new GrafoMatriz(1,0);
+	GrafoMatriz gm = new GrafoMatriz(1, 1);
 
 	gm.inserirVertice("A"); //0
 	gm.inserirVertice("B"); //1
 	gm.inserirVertice("C"); //2
 	gm.inserirVertice("D"); //3
 	gm.inserirVertice("E"); //4
+	gm.inserirVertice("F"); //5
 
-	gm.inserirAresta(0, 1);
-	gm.inserirAresta(0, 3);
-	gm.inserirAresta(1, 4);
-	gm.inserirAresta(1, 2);
-	gm.inserirAresta(3, 4);
-	gm.inserirAresta(4, 2);
+	gm.inserirAresta(0, 2, 7);
+	gm.inserirAresta(0, 4, 10);
+	gm.inserirAresta(0, 3, 2);
+	gm.inserirAresta(1, 2, 3);
+	gm.inserirAresta(1, 5, 2);
+	gm.inserirAresta(2, 5, 3);
+	gm.inserirAresta(2, 4, 9);
+	gm.inserirAresta(3, 5, 4);
+	gm.inserirAresta(3, 4, 7);
+	gm.inserirAresta(4, 5, 8);
 
-	cout << gm.dsatur();*/
+	gm.prim();
 
 	/*vector<int> distancia;
 	distancia = gr.dijkstra(true, 0);

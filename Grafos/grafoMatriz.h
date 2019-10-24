@@ -248,7 +248,7 @@ public:
 			indices.push_back(x);
 			historico.push_back(x);
 		}
-		for (int x = vertices_tmp.size()-1; x > 0; x--) {
+		for (int x = vertices_tmp.size() - 1; x > 0; x--) {
 			for (int i = 0; i < x; i++) {
 				if (grau[i] < grau[i + 1]) {
 					int aux = grau[i];
@@ -265,7 +265,7 @@ public:
 		}
 		for (int x = 0; x < vertices_tmp.size(); x++) {
 			for (int y = 0; y < vertices_tmp.size(); y++) {
-				if (vertices_tmp[x] == vertices[y]) 
+				if (vertices_tmp[x] == vertices[y])
 					indices[y] = x;
 			}
 		}
@@ -298,7 +298,7 @@ public:
 			for (int i = 0; i < cores_ja_foram.size(); i++) {
 				if (vertices_cores[x] == cores_ja_foram[i])
 					break;
-				if (i == cores_ja_foram.size() - 1) 
+				if (i == cores_ja_foram.size() - 1)
 					cores_ja_foram.push_back(vertices_cores[x]);
 			}
 		}
@@ -351,9 +351,9 @@ public:
 		while (verificaCorEmBranco(vertices_cores)) {
 			vector <int> saturados;
 			int maior_saturacao = 0;
-			int trocou=0;
+			int trocou = 0;
 			for (int j = 0; j < saturacao.size(); j++) {
-				if (j == 0 && vertices_cores[j] == 0) 
+				if (j == 0 && vertices_cores[j] == 0)
 					maior_saturacao = saturacao[j];
 				else if (maior_saturacao < saturacao[j] && vertices_cores[j] == 0)
 					maior_saturacao = saturacao[j];
@@ -365,24 +365,24 @@ public:
 			for (int g = 0; g < cores.size(); g++) {
 				int cor_atual = cores[g];
 				for (int x = 0; x < saturados.size(); x++) {
-						vector <int> vizinhos = retornarVizinhos(saturados[x]);
-						if (trocou == 1)
+					vector <int> vizinhos = retornarVizinhos(saturados[x]);
+					if (trocou == 1)
+						break;
+					if (vizinhos.size() == 0 and vertices_cores[indices[saturados[x]]] == 0)
+						vertices_cores[indices[saturados[x]]] = cor_atual;
+					for (int i = 0; i < vizinhos.size(); i++) {
+						if (vertices_cores[indices[vizinhos[i]]] == cor_atual)
 							break;
-						if (vizinhos.size() == 0 and vertices_cores[indices[saturados[x]]] == 0)
+						else if (i == vizinhos.size() - 1) {
 							vertices_cores[indices[saturados[x]]] = cor_atual;
-						for (int i = 0; i < vizinhos.size(); i++) {
-							if (vertices_cores[indices[vizinhos[i]]] == cor_atual)
-								break;
-							else if (i == vizinhos.size() - 1) {
-								vertices_cores[indices[saturados[x]]] = cor_atual;
-								for (int y = 0; y < vizinhos.size(); y++) {
-									if (vertices_cores[indices[vizinhos[y]]] != cor_atual) {
-										saturacao[indices[vizinhos[y]]]++;
-										trocou = 1;
-									}
+							for (int y = 0; y < vizinhos.size(); y++) {
+								if (vertices_cores[indices[vizinhos[y]]] != cor_atual) {
+									saturacao[indices[vizinhos[y]]]++;
+									trocou = 1;
 								}
 							}
 						}
+					}
 				}
 			}
 			cont++;
@@ -400,5 +400,102 @@ public:
 		}
 		return cores_ja_foram.size();
 	}
+
+	int existe_aresta_aux(vector<vector <int>> q, int origem, int destino) {
+		if (q[origem][destino] == NULL) {
+			return 0;
+		}
+		return q[origem][destino];
+	}
+
+	vector<int> retornarVizinhosAux(vector<vector<int>> q, int vertice) {
+		vector <int> vizinhos;
+		for (int x = 0; x < q.size(); x++) {
+			if (q[vertice][x] != 0) {
+				vizinhos.push_back(x);
+			}
+			else if (q[x][vertice] != 0) {
+				vizinhos.push_back(x);
+			}
+		}
+		return vizinhos;
+	}
+
+	bool verificaVazio(vector<vector<int>> q) {
+		for (int x = 0; x < q.size(); x++) {
+			for (int y = 0; y < q.size(); y++) {
+				if (q[x][y] != 0)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	void prim() {
+		vector <string> s;
+		vector <vector <int>> q = arestas;
+		int vertice = 2;
+		while (verificaVazio(q)) {
+			vector<int> vizinhos = retornarVizinhosAux(q, vertice);
+			int menor = -1;
+			for (int x = 0; x < vizinhos.size(); x++) {
+				if (menor == -1)
+					menor = vizinhos[x];
+				if (q[vertice][vizinhos[x]] < q[vertice][menor])
+					menor = vizinhos[x];
+			}
+			for (int x = 0; x < q.size(); x++) {
+				for (int y = 0; y < q.size(); y++)
+					if (x == vertice || y == vertice)
+						q[x][y] = 0;
+			}
+			if (existe_aresta_aux(q, vertice, menor) == 0 && existe_aresta_aux(arestas, vertice, menor) > 0) {
+				s.push_back(vertices[vertice]+vertices[menor]);
+				vertice = menor;
+			}
+		}
+		cout << "Solução: {";
+		for (int x = 0; x < s.size(); x++) {
+			cout << s[x];
+			if (x != s.size()-1)
+				cout << ", ";
+		}
+		cout << "}";
+	}
+
+
+
+
+	void kruskal() {
+		vector <string> s;
+		vector <vector <int>> q = arestas;
+		int vertice = 2;
+		while (verificaVazio(q)) {
+			vector<int> vizinhos = retornarVizinhosAux(q, vertice);
+			int menor = -1;
+			for (int x = 0; x < vizinhos.size(); x++) {
+				if (menor == -1)
+					menor = vizinhos[x];
+				if (q[vertice][vizinhos[x]] < q[vertice][menor])
+					menor = vizinhos[x];
+			}
+			for (int x = 0; x < q.size(); x++) {
+				for (int y = 0; y < q.size(); y++)
+					if (x == vertice || y == vertice)
+						q[x][y] = 0;
+			}
+			if (existe_aresta_aux(q, vertice, menor) == 0 && existe_aresta_aux(arestas, vertice, menor) > 0) {
+				s.push_back(vertices[vertice] + vertices[menor]);
+				vertice = menor;
+			}
+		}
+		cout << "Solução: {";
+		for (int x = 0; x < s.size(); x++) {
+			cout << s[x];
+			if (x != s.size() - 1)
+				cout << ", ";
+		}
+		cout << "}";
+	}
 };
-#endif 
+#endif
