@@ -431,62 +431,37 @@ public:
 		return false;
 	}
 
-	void prim() {
+	int prim() {
 		vector <string> s;
 		vector <vector <int>> q = arestas;
-		int vertice = 2;
+		vector <int> vertices_passados;
+		vertices_passados.push_back(2);
+		int peso = 0;
 		while (verificaVazio(q)) {
-			vector<int> vizinhos = retornarVizinhosAux(q, vertice);
 			int menor = -1;
-			for (int x = 0; x < vizinhos.size(); x++) {
-				if (menor == -1)
-					menor = vizinhos[x];
-				if (q[vertice][vizinhos[x]] < q[vertice][menor])
-					menor = vizinhos[x];
+			int escolhido;
+			for (int i = 0; i < vertices_passados.size(); i++) {
+				vector<int> vizinhos = retornarVizinhosAux(q, vertices_passados[i]);
+				for (int x = 0; x < vizinhos.size(); x++) {
+					if (menor == -1) {
+						menor = vizinhos[x];
+						escolhido = i;
+					}
+					if (q[vertices_passados[i]][vizinhos[x]] < q[vertices_passados[i]][menor]) {
+						menor = vizinhos[x];
+						escolhido = i;
+					}
+				}
+				for (int x = 0; x < q.size(); x++) {
+					for (int y = 0; y < q.size(); y++)
+						if (x == vertices_passados[i] || y == vertices_passados[i])
+							q[x][y] = 0;
+				}
 			}
-			for (int x = 0; x < q.size(); x++) {
-				for (int y = 0; y < q.size(); y++)
-					if (x == vertice || y == vertice)
-						q[x][y] = 0;
-			}
-			if (existe_aresta_aux(q, vertice, menor) == 0 && existe_aresta_aux(arestas, vertice, menor) > 0) {
-				s.push_back(vertices[vertice]+vertices[menor]);
-				vertice = menor;
-			}
-		}
-		cout << "Solução: {";
-		for (int x = 0; x < s.size(); x++) {
-			cout << s[x];
-			if (x != s.size()-1)
-				cout << ", ";
-		}
-		cout << "}";
-	}
-
-
-
-
-	void kruskal() {
-		vector <string> s;
-		vector <vector <int>> q = arestas;
-		int vertice = 2;
-		while (verificaVazio(q)) {
-			vector<int> vizinhos = retornarVizinhosAux(q, vertice);
-			int menor = -1;
-			for (int x = 0; x < vizinhos.size(); x++) {
-				if (menor == -1)
-					menor = vizinhos[x];
-				if (q[vertice][vizinhos[x]] < q[vertice][menor])
-					menor = vizinhos[x];
-			}
-			for (int x = 0; x < q.size(); x++) {
-				for (int y = 0; y < q.size(); y++)
-					if (x == vertice || y == vertice)
-						q[x][y] = 0;
-			}
-			if (existe_aresta_aux(q, vertice, menor) == 0 && existe_aresta_aux(arestas, vertice, menor) > 0) {
-				s.push_back(vertices[vertice] + vertices[menor]);
-				vertice = menor;
+			if (existe_aresta_aux(q, vertices_passados[escolhido], menor) == 0 && existe_aresta_aux(arestas, vertices_passados[escolhido], menor) > 0) {
+				s.push_back(vertices[vertices_passados[escolhido]] + vertices[menor]);
+				peso += arestas[vertices_passados[escolhido]][menor];
+				vertices_passados.push_back(menor);
 			}
 		}
 		cout << "Solução: {";
@@ -496,6 +471,87 @@ public:
 				cout << ", ";
 		}
 		cout << "}";
+		return peso;
+	}
+
+	bool verificaArvore(vector <vector <string>> f, string verticex, string verticey) {
+		for (int x = 0; x < f.size(); x++) {
+			for (int y = 0; y < f[x].size(); y++) {
+				if (f[x][y] == verticex) {
+					for (int i = 0; i < f[x].size(); i++) {
+						if (f[x][i] == verticey)
+							return false;
+						if (i == f[x].size() - 1)
+							return true;
+					}
+				}
+				if (f[x][y] == verticey) {
+					for (int i = 0; i < f[x].size(); i++) {
+						if (f[x][i] == verticex)
+							return false;
+						if (i == f[x].size() - 1)
+							return true;
+					}
+				}
+			}
+		}
+	}
+
+	int retornaPosicao(vector <vector <string>> f, string procura) {
+		for (int x = 0; x < f.size(); x++) {
+			for (int y = 0; y < f[x].size(); y++) {
+				if (f[x][y] == procura)
+					return x;
+			}
+		}
+	}
+
+
+	int kruskal() {
+		vector <string> s;
+		int peso = 0;
+		vector <vector <int>> q = arestas;
+		vector <vector <string>> f;
+		vector <int> ja_foi;
+		for (int x = 0; x < vertices.size(); x++) {
+			f.push_back({ vertices[x] });
+		}
+		while (verificaVazio(q)) {
+			int menorx = -1;
+			int menory = -1;
+			for (int x = 0; x < q.size(); x++) {
+				for (int y = 0; y < q.size(); y++) {
+					if (q[x][y] != 0 && menorx == -1) {
+						menorx = x;
+						menory = y;
+					}
+					if (menorx != -1 && q[x][y] < q[menorx][menory] && q[x][y] != 0 && verificaArvore(f, vertices[x], vertices[y])) {
+						menorx = x;
+						menory = y;
+					}
+					if (x == q.size() - 1 && y == q.size() - 1) {
+						q[menorx][menory] = 0;
+					}
+				}
+			}
+			if (verificaArvore(f, vertices[menorx], vertices[menory])) {
+				s.push_back(vertices[menorx] + vertices[menory]);
+				peso += arestas[menorx][menory];
+				int tempx = retornaPosicao(f, vertices[menorx]);
+				int tempy = retornaPosicao(f, vertices[menory]);
+				for (int x = 0; x < f[tempy].size(); x++)
+					f[tempx].push_back(f[tempy][x]);
+				f.erase(f.begin() + tempy);
+			}
+		}
+		cout << "Solução: {";
+		for (int x = 0; x < s.size(); x++) {
+			cout << s[x];
+			if (x != s.size() - 1)
+				cout << ", ";
+		}
+		cout << "}";
+		return peso;
 	}
 };
 #endif

@@ -43,7 +43,7 @@ int main()
 	gm.inserirAresta(3, 4, 7);
 	gm.inserirAresta(4, 5, 8);
 
-	gm.prim();
+	cout << "\nPeso total: " << gm.prim();
 
 	/*vector<int> distancia;
 	distancia = gr.dijkstra(true, 0);
