@@ -9,6 +9,7 @@
 #include <locale.h>
 #include <iostream>
 #include <stack>
+#include <chrono>
 
 using namespace std;
 
@@ -18,27 +19,38 @@ int main()
 
 
 	
-	GrafoMatriz gr = criarGrafoArquivo <GrafoMatriz>("Grafos/trabalho-28cores.txt");
+	/*GrafoLista gr = criarGrafoArquivo <GrafoLista>("Grafos/trabalho-65cores1.txt");
 
+	auto inicio = std::chrono::high_resolution_clock::now();
+	gr.imprimirGrafo();
+	auto resultado = std::chrono::high_resolution_clock::now() - inicio;
 
-	cout << gr.dsatur();
+	long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(resultado).count();
 
-	/*GrafoMatriz gm = new GrafoMatriz(1,0);
+	cout << endl << "Tempo de execução: " << milliseconds;*/
 
-	gm.inserirVertice("A"); //0
-	gm.inserirVertice("B"); //1
-	gm.inserirVertice("C"); //2
-	gm.inserirVertice("D"); //3
-	gm.inserirVertice("E"); //4
+	GrafoLista gl = GrafoLista(false, true);
 
-	gm.inserirAresta(0, 1);
-	gm.inserirAresta(0, 3);
-	gm.inserirAresta(1, 4);
-	gm.inserirAresta(1, 2);
-	gm.inserirAresta(3, 4);
-	gm.inserirAresta(4, 2);
+	gl.inserirVertice("A"); //0
+	gl.inserirVertice("B"); //1
+	gl.inserirVertice("C"); //2
+	gl.inserirVertice("D"); //3
+	gl.inserirVertice("E"); //4
+	gl.inserirVertice("F"); //5
 
-	cout << gm.dsatur();*/
+	gl.inserirAresta(0, 2, 7);
+	gl.inserirAresta(0, 4, 10);
+	gl.inserirAresta(0, 3, 2);
+	gl.inserirAresta(4, 2, 9);
+	gl.inserirAresta(4, 3, 7);
+	gl.inserirAresta(4, 5, 8);
+	gl.inserirAresta(5, 1, 2);
+	gl.inserirAresta(5, 2, 3);
+	gl.inserirAresta(5, 3, 4);
+	gl.inserirAresta(2, 1, 3);
+	
+
+	gl.prim(2);
 
 	/*vector<int> distancia;
 	distancia = gr.dijkstra(true, 0);

@@ -23,6 +23,7 @@ public:
 	bool inserirVertice(string label) {
 		Vertice ver;
 		ver.label = label;
+		ver.id = this->vertices_grafo.size();
 		this->vertices_grafo.push_back(ver);
 		return true;
 	};

@@ -10,12 +10,15 @@
 #include "dijkstra.h"
 #include "coloracao.h"
 #include "dsatur.h"
+#include "aresta.h"
+
 
 using namespace std;
 
 class GrafoLista : public Grafo {
 public:
 	vector <Vertice> vertices;
+	vector <Aresta> arestas;
 
 	GrafoLista(bool dir = false, bool pond = false) : Grafo(dir, pond) {
 
@@ -30,6 +33,7 @@ public:
 	bool inserirVertice(string label) {
 		Vertice ver;
 		ver.label = label;
+		ver.id = this->vertices.size();
 		if (Grafo::inserirVertice(label)) {
 			this->vertices.push_back(ver);
 			return true;
@@ -43,10 +47,15 @@ public:
 		else
 		{
 			Adjacente adj;
+			Aresta ars;
 			adj.id = destino;
 			adj.peso = peso;
+			ars.origem = origem;
+			ars.destino = destino;
+			ars.peso = peso;
 			this->vertices.at(origem).adj.push_back(adj);
-			if (!this->direcionado) {
+			this->arestas.push_back(ars);
+			if (!Grafo::direcionado) {
 				adj.id = origem;
 				adj.peso = peso;
 				this->vertices.at(destino).adj.push_back(adj);
@@ -81,7 +90,7 @@ public:
 		return vizinhos;
 	}
 
-	vector<Adjacente> retornarVizinhosPond(int vertice) {
+	vector<Adjacente> retornarVizinhosPond(int vertice, bool ordenadoPeso = false) {
 		vector<Adjacente> vizinhos;
 		if (vertice < this->vertices.size()) {
 			for (int i = 0; i < this->vertices.at(vertice).adj.size(); i++)
@@ -89,6 +98,24 @@ public:
 				vizinhos.push_back(this->vertices.at(vertice).adj.at(i));
 			}
 		}
+
+		if (ordenadoPeso) {
+			Adjacente aux;
+			int soma;
+			for (int i = 0; i < vizinhos.size(); i++)
+			{
+				for (int j = 0; j < vizinhos.size() - 1; j++)
+				{
+					soma = j + 1;
+					if (vizinhos.at(j).peso > vizinhos.at(soma).peso) {
+						aux = vizinhos.at(j);
+						vizinhos.at(j) = vizinhos.at(soma);
+						vizinhos.at(soma) = aux;
+					}
+				}
+			}
+		}
+
 		return vizinhos;
 	}
 
@@ -164,7 +191,6 @@ public:
 	vector<int> buscaLargura(int pos = 0) {
 		vector<int> visitados;
 		vector<int> fila;
-		vector<int>::iterator it;
 		vector<int> viz;
 
 		visitados.push_back(pos);
@@ -567,6 +593,230 @@ public:
 		} while (vertices_coloridos < tam_dsatur);
 
 		return qtdCoresDsatur(dsatur);
+	}
+
+	vector<int> caixeiroViajanteExaustivo(int ver, vector<int> visitados) {
+		int menor = this->vertices.at(ver).adj.at(0).peso;
+		int ver_menor = this->vertices.at(ver).adj.at(0).id;
+		for (int i = 1; i < this->vertices.at(ver).adj.size(); i++)
+		{
+			if (this->vertices.at(ver).adj.at(i).peso < menor) {
+				menor = this->vertices.at(ver).adj.at(i).peso;
+				ver_menor = this->vertices.at(ver).adj.at(0).id;
+			}
+		}
+		visitados.push_back(ver_menor);
+		return caixeiroViajanteExaustivo(ver, visitados);
+	}
+
+	Aresta primInverso(int ver, vector<Vertice> vertices, bool &origem, bool &destino) {
+		vector<Aresta> arestas_solucao;
+		vector<Adjacente> adj_ver_atual;
+		Aresta aresta;
+		aresta.peso = INT_MAX;
+
+		origem = false;
+		destino = false;
+		adj_ver_atual = retornarVizinhosPond(ver, true);
+		for (int i = 0; i < adj_ver_atual.size(); i++)
+		{
+			for (int j = 0; j < vertices.size(); j++)
+			{
+				if (vertices.at(j).id == adj_ver_atual.at(i).id) {
+					destino = true;
+				}
+				if (vertices.at(j).id == ver) {
+					origem = true;
+				}
+			}
+			if (origem != destino) {
+				aresta.origem = ver;
+				aresta.destino = adj_ver_atual.at(i).id;
+				aresta.peso = adj_ver_atual.at(i).peso;
+				return aresta;
+				break;
+			}
+		}
+		return aresta;
+
+	}
+
+	void prim(int ver = 0) {
+		vector<Aresta> arestas_solucao;
+		vector<Vertice> vertices = this->vertices;
+
+		for (int i = 0; i < vertices.size(); i++)
+		{
+			if (vertices.at(i).id == ver) {
+				vertices.erase(vertices.begin() + i);
+			}
+		}
+		
+		vector<Adjacente> adj_ver_atual;
+		bool origem = false, destino = false, temProx = false, auxOrigem, auxDestino;
+		Aresta aresta;
+		Aresta inv;
+
+		while (vertices.size() != 0)
+		{
+			origem = false;
+			destino = false;
+			temProx = false;
+			adj_ver_atual = retornarVizinhosPond(ver, true);
+			for (int i = 0; i < adj_ver_atual.size(); i++)
+			{
+				for (int j = 0; j < vertices.size(); j++)
+				{
+					if (vertices.at(j).id == adj_ver_atual.at(i).id) {
+						destino = true;
+					}
+					if (vertices.at(j).id == ver) {
+						origem = true;
+					}
+				}
+				if (origem != destino) {
+					aresta.origem = ver;
+					aresta.destino = adj_ver_atual.at(i).id;
+					aresta.peso = adj_ver_atual.at(i).peso;
+					auxOrigem = origem;
+					auxDestino = destino;
+					inv = primInverso(aresta.destino, vertices, origem, destino);
+					if (aresta.peso > inv.peso) {
+						aresta = inv;
+					}
+					else
+					{
+						origem = auxOrigem;
+						destino = auxDestino;
+					}
+					arestas_solucao.push_back(aresta);
+					if (origem) {
+						for (int k = 0; k < vertices.size(); k++)
+						{
+							if (vertices.at(k).id == aresta.origem) {
+								vertices.erase(vertices.begin() + k);
+								break;
+							}
+						}
+					}
+					else {
+						for (int k = 0; k < vertices.size(); k++)
+						{
+							if (vertices.at(k).id == aresta.destino) {
+								vertices.erase(vertices.begin() + k);
+								break;
+							}
+						}
+					}
+					ver = aresta.destino;
+					temProx = true;
+					break;
+				}
+			}
+			if (!temProx) {
+				ver = arestas_solucao.at(arestas_solucao.size() - 1).origem;
+			}
+		}
+
+		for (int i = 0; i < arestas_solucao.size(); i++)
+		{
+			cout << arestas_solucao.at(i).origem << "," << arestas_solucao.at(i).destino << endl;
+		}
+
+	}
+
+	void kruskal() {
+		vector<Aresta> arestas_solucao;
+		vector<Aresta> arestas = this->arestas;
+		vector<vector<Vertice>> vertices;
+
+		vertices.resize(this->vertices.size());
+
+		for (int i = 0; i < this->vertices.size(); i++)
+		{
+			vertices.at(i).push_back(this->vertices.at(i));
+		}
+
+		Aresta aux;
+		bool check = false;
+		int origem;
+		int destino;
+		int aresta_pos;
+
+		while (arestas.size() != 0)
+		{
+
+			aux = arestas.at(0);
+			aresta_pos = 0;
+
+			for (int i = 0; i < arestas.size(); i++)
+			{
+				if (arestas.at(i).peso < aux.peso) {
+					aux = arestas.at(i);
+					aresta_pos = i;
+				}
+			}
+
+
+			arestas.erase(arestas.begin() + aresta_pos);
+			
+
+			check = false;
+
+			for (int i = 0; i < vertices.size(); i++)
+			{
+				for (int j = 0; j < vertices.at(i).size(); j++)
+				{
+					if (vertices.at(i).at(j).id == aux.origem) {
+						origem = i;
+						for (int x = 0; x < vertices.at(i).size(); x++)
+						{
+							if (vertices.at(i).at(x).id == aux.destino) {
+								check = true;
+								break;
+							}
+						}
+					}
+					if (check) {
+						break;
+					}
+				}
+				if (check) {
+					break;
+				}
+			}
+
+			if (!check) {
+
+
+				arestas_solucao.push_back(aux);
+
+
+				for (int i = 0; i < vertices.size(); i++)
+				{
+					for (int j = 0; j < vertices.at(i).size(); j++)
+					{
+						if (vertices.at(i).at(j).id == aux.destino) {
+							destino = i;
+							break;
+						}
+					}
+				}
+
+				for (int i = 0; i < vertices.at(destino).size(); i++)
+				{
+					vertices.at(origem).push_back(vertices.at(destino).at(i));
+				}
+
+				vertices.erase(vertices.begin() + destino);
+			}
+
+		}
+
+		for (int i = 0; i < arestas_solucao.size(); i++)
+		{
+			cout << arestas_solucao.at(i).origem << "," << arestas_solucao.at(i).destino << endl;
+		}
 	}
 
 	bool isPlano() {

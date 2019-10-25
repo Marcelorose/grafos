@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="aresta.h" />
     <ClInclude Include="coloracao.h" />
     <ClInclude Include="dijkstra.h" />
     <ClInclude Include="dsatur.h" />
