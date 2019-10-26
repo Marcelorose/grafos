@@ -19,17 +19,17 @@ int main()
 
 
 	
-	/*GrafoLista gr = criarGrafoArquivo <GrafoLista>("Grafos/trabalho-65cores1.txt");
+	GrafoMatriz gr = criarGrafoArquivo <GrafoMatriz>("Grafos/GrafosMST/50vertices25%Arestas.txt");
 
 	auto inicio = std::chrono::high_resolution_clock::now();
-	gr.imprimirGrafo();
+	cout << gr.prim();
 	auto resultado = std::chrono::high_resolution_clock::now() - inicio;
 
 	long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(resultado).count();
 
-	cout << endl << "Tempo de execução: " << milliseconds;*/
+	cout << endl << "Tempo de execucao: " << milliseconds;
 
-	GrafoLista gl = GrafoLista(false, true);
+	/*GrafoLista gl = GrafoLista(false, true);
 
 	gl.inserirVertice("A"); //0
 	gl.inserirVertice("B"); //1
@@ -48,9 +48,8 @@ int main()
 	gl.inserirAresta(5, 2, 3);
 	gl.inserirAresta(5, 3, 4);
 	gl.inserirAresta(2, 1, 3);
-	
 
-	gl.prim(2);
+	gl.kruskal();*/
 
 	/*vector<int> distancia;
 	distancia = gr.dijkstra(true, 0);

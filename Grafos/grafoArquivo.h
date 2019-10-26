@@ -36,7 +36,6 @@ grafo criarGrafoArquivo(string arquivo) {
 
 	grafo gr = grafo(direcionado, ponderado);
 
-
 	if (myfile2.is_open()) {
 
 		while (!myfile2.eof()) 
@@ -45,17 +44,30 @@ grafo criarGrafoArquivo(string arquivo) {
 
 			if (cont > 0 && cont == vertices) {
 				gr.inserirVertice(line);
-				while (myfile2 >> auxOrigem >> auxDestino)
+				gr.vertices.size();
+				if (ponderado) {
+					while (myfile2 >> auxOrigem >> auxDestino >> auxPeso)
+					{
+						origem = auxOrigem;
+						destino = auxDestino;
+						peso = auxPeso;
+						gr.inserirAresta(origem, destino, peso);
+					}
+				}
+				else
 				{
-					origem = auxOrigem;
-					destino = auxDestino;
-					gr.inserirAresta(origem, destino);
+					while (myfile2 >> auxOrigem >> auxDestino)
+					{
+						origem = auxOrigem;
+						destino = auxDestino;
+						gr.inserirAresta(origem, destino);
+					}
 				}
 			}
 			else if (cont > 0 && cont <= vertices) {
 				gr.inserirVertice(line);
 			}
-
+			
 			cont++;
 		}
 		myfile2.close();

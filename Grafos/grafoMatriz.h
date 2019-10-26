@@ -424,8 +424,9 @@ public:
 	bool verificaVazio(vector<vector<int>> q) {
 		for (int x = 0; x < q.size(); x++) {
 			for (int y = 0; y < q.size(); y++) {
-				if (q[x][y] != 0)
+				if (q[x][y] != 0) {
 					return true;
+				}
 			}
 		}
 		return false;
@@ -434,34 +435,30 @@ public:
 	int prim() {
 		vector <string> s;
 		vector <vector <int>> q = arestas;
-		vector <int> vertices_passados;
-		vertices_passados.push_back(2);
+		int vertice = 2;
 		int peso = 0;
 		while (verificaVazio(q)) {
 			int menor = -1;
 			int escolhido;
-			for (int i = 0; i < vertices_passados.size(); i++) {
-				vector<int> vizinhos = retornarVizinhosAux(q, vertices_passados[i]);
+			vector<int> vizinhos = retornarVizinhosAux(q, vertice);
 				for (int x = 0; x < vizinhos.size(); x++) {
 					if (menor == -1) {
 						menor = vizinhos[x];
-						escolhido = i;
 					}
-					if (q[vertices_passados[i]][vizinhos[x]] < q[vertices_passados[i]][menor]) {
+					if (q[vertice][vizinhos[x]] < q[vertice][menor]) {
 						menor = vizinhos[x];
-						escolhido = i;
 					}
 				}
 				for (int x = 0; x < q.size(); x++) {
-					for (int y = 0; y < q.size(); y++)
-						if (x == vertices_passados[i] || y == vertices_passados[i])
+					for (int y = 0; y < q.size(); y++) {
+						if (x == vertice || y == vertice)
 							q[x][y] = 0;
+					}
 				}
-			}
-			if (existe_aresta_aux(q, vertices_passados[escolhido], menor) == 0 && existe_aresta_aux(arestas, vertices_passados[escolhido], menor) > 0) {
-				s.push_back(vertices[vertices_passados[escolhido]] + vertices[menor]);
-				peso += arestas[vertices_passados[escolhido]][menor];
-				vertices_passados.push_back(menor);
+			if (existe_aresta_aux(q, vertice, menor) == 0 && existe_aresta_aux(arestas, vertice, menor) > 0) {
+				s.push_back(vertices[vertice] + vertices[menor]);
+				peso += arestas[vertice][menor];
+				vertice = menor;
 			}
 		}
 		cout << "Solução: {";
@@ -517,6 +514,7 @@ public:
 			f.push_back({ vertices[x] });
 		}
 		while (verificaVazio(q)) {
+			//cout << peso << endl;
 			int menorx = -1;
 			int menory = -1;
 			for (int x = 0; x < q.size(); x++) {
@@ -544,13 +542,13 @@ public:
 				f.erase(f.begin() + tempy);
 			}
 		}
-		cout << "Solução: {";
+		/*cout << "Solução: {";
 		for (int x = 0; x < s.size(); x++) {
 			cout << s[x];
 			if (x != s.size() - 1)
 				cout << ", ";
 		}
-		cout << "}";
+		cout << "}";*/
 		return peso;
 	}
 };

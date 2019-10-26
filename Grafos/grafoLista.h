@@ -656,9 +656,17 @@ public:
 		bool origem = false, destino = false, temProx = false, auxOrigem, auxDestino;
 		Aresta aresta;
 		Aresta inv;
+		int ver_atual = INT_MIN;
 
 		while (vertices.size() != 0)
 		{
+			//cout << vertices.size() << endl;
+			if (ver == ver_atual) {
+				ver = vertices.at(0).id;
+			}
+
+			ver_atual = ver;
+
 			origem = false;
 			destino = false;
 			temProx = false;
@@ -717,11 +725,13 @@ public:
 				ver = arestas_solucao.at(arestas_solucao.size() - 1).origem;
 			}
 		}
-
+		int peso_total = 0;
 		for (int i = 0; i < arestas_solucao.size(); i++)
 		{
-			cout << arestas_solucao.at(i).origem << "," << arestas_solucao.at(i).destino << endl;
+			peso_total += arestas_solucao.at(i).peso;
 		}
+
+		cout << "Peso total: " << peso_total;
 
 	}
 
@@ -745,7 +755,7 @@ public:
 
 		while (arestas.size() != 0)
 		{
-
+			cout << arestas.size() << endl;
 			aux = arestas.at(0);
 			aresta_pos = 0;
 
@@ -813,10 +823,14 @@ public:
 
 		}
 
+		int peso_total = 0;
+
 		for (int i = 0; i < arestas_solucao.size(); i++)
 		{
-			cout << arestas_solucao.at(i).origem << "," << arestas_solucao.at(i).destino << endl;
+			peso_total += arestas_solucao.at(i).peso;
 		}
+
+		cout << "Peso total: " << peso_total;
 	}
 
 	bool isPlano() {
